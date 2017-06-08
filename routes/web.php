@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('about', 'PageController@about');
+
+Route::get('requests/{request}', 'RequestController@show');
