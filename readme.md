@@ -1,3 +1,11 @@
+
+## PHIC Regional VII Office Supplies System
+
+This app creates an app that will help the supplies department of the Regional VII Office of the PHIC in organizing their supplies.
+
+
+## Laravel Details
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
@@ -7,7 +15,6 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
 
