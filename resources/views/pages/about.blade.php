@@ -1,11 +1,8 @@
-<!DOCTYPE html>
+@extends('layouts.master')
 
-<html>
-	<head>
-		<title>About</title>
-	</head>
-	<body>
-		<h1>About</h1>
-		<p>This is the PhilHealth Supplies system I'm building.</p>
-	</body>
-</html>
+@section('title', 'About')
+
+@section('content')
+<h1>About</h1>
+<p>This is the PhilHealth Supplies system I'm building.</p>
+@endsection

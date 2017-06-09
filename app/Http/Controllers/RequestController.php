@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request as SetupRequest;
+use Illuminate\Http\Request;
 
-use App\Request;
+use App\Request as SetupRequest;
 
 class RequestController extends Controller
 {
@@ -15,7 +15,11 @@ class RequestController extends Controller
      */
     public function index()
     {
-        //
+        $requests = SetupRequest::all();
+
+        $data = array();
+        $data['requests'] = $requests;        
+        return view('requests.index', $data);
     }
 
     /**
@@ -25,7 +29,11 @@ class RequestController extends Controller
      */
     public function create()
     {
-        //
+        $request = new SetupRequest;
+        $data = array();
+        $data['request'] = $request;
+        return view('requests.create', $data);
+
     }
 
     /**
@@ -36,7 +44,10 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        echo '<pre>';
+        print_r($request->ris_number);
+        echo '</pre>';
+        exit;
     }
 
     /**
@@ -48,7 +59,7 @@ class RequestController extends Controller
     public function show($id)
     {
         $data = array();
-        $request = Request::findOrFail($id);
+        $request = SetupRequest::findOrFail($id);
         $data['request'] = $request;
 
         // echo '<pre>';

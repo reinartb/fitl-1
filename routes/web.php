@@ -17,4 +17,8 @@ Route::get('/', function () {
 
 Route::get('about', 'PageController@about');
 
+
+Route::post('requests/store', 'RequestController@store');
+Route::get('requests/create', 'RequestController@create');
 Route::get('requests/{request}', 'RequestController@show');
+Route::get('requests', 'RequestController@index');
