@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Request as SetupRequest;
+use App\Request as RequestObject;
 
 class RequestController extends Controller
 {
@@ -15,7 +15,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $requests = SetupRequest::all();
+        $requests = RequestObject::all();
 
         $data = array();
         $data['requests'] = $requests;        
@@ -29,9 +29,9 @@ class RequestController extends Controller
      */
     public function create()
     {
-        $request = new SetupRequest;
+        $requestobject = new RequestObject;
         $data = array();
-        $data['request'] = $request;
+        $data['request'] = $requestobject;
         return view('requests.create', $data);
 
     }
@@ -44,10 +44,34 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        echo '<pre>';
-        print_r($request->ris_number);
-        echo '</pre>';
-        exit;
+        $requestobject = new RequestObject;
+
+        // Set the request's object from the submitted form data.
+
+        $requestobject->ris_number            = $request->ris_number;
+        $requestobject->requested_by_user     = $request->requested_by_user;
+        $requestobject->requested_by_section  = $request->requested_by_section;
+        $requestobject->purpose               = $request->purpose;
+
+        // Create the new request in the database.
+        //If code is not successful.
+        if(!$requestobject->save()) {
+            $errors = $requestobject->getErrors();
+
+            //Redirect back to the create page and pass the errors.
+            return redirect()
+                ->back()
+                ->with('errors', $errors)
+                ->withInput();
+        }
+
+        // Object successfully created.
+
+        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was submitted successfully!';
+
+        return redirect()
+            ->action('RequestController@index')
+            ->with('message', $message);
     }
 
     /**
@@ -59,7 +83,7 @@ class RequestController extends Controller
     public function show($id)
     {
         $data = array();
-        $request = SetupRequest::findOrFail($id);
+        $request = RequestObject::findOrFail($id);
         $data['request'] = $request;
 
         // echo '<pre>';

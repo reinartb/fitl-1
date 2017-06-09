@@ -19,6 +19,7 @@
 			</div>
 			<div class="col-md-8">
 				<p class="list-group-item-text"> Purpose: {{ $request->purpose }} </p>
+				<br>
 				<p class="list-group-item-text"> Requested on: {{ $request->created_at }}</p>
 			</div>
 		</div>
