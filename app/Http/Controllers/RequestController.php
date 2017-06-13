@@ -101,8 +101,11 @@ class RequestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {    
+   
+        $request = RequestObject::findOrFail($id);
+        return view('requests.edit', ['request' => $request]);
+
     }
 
     /**
@@ -114,7 +117,33 @@ class RequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $requestobject = RequestObject::findOrFail($id);
+
+         // Set the request's object from the submitted form data.
+
+        $requestobject->ris_number            = $request->ris_number;
+        $requestobject->requested_by_user     = $request->requested_by_user;
+        $requestobject->requested_by_section  = $request->requested_by_section;
+        $requestobject->purpose               = $request->purpose;
+
+
+        if (!$requestobject->save()) {
+            //Redirect back to the create page and pass the errors.
+            return redirect()
+                ->back()
+                ->with('errors', $requestobject->getErrors())
+                ->withInput();
+        }   
+
+         // Object successfully created.
+
+        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was updated successfully!';
+
+        return redirect()
+            ->action('RequestController@index')
+            ->with('message', $message);
+
     }
 
     /**
@@ -125,6 +154,16 @@ class RequestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $requestobject = RequestObject::findOrFail($id);
+        
+
+        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was deleted successfully!';
+
+        $requestobject->delete();
+
+        return redirect()
+            ->action('RequestController@index')
+            ->with('message', $message);
+
     }
 }

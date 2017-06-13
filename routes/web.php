@@ -17,7 +17,9 @@ Route::get('/', function () {
 
 Route::get('about', 'PageController@about');
 
-
+Route::delete('requests/{request}', 'RequestController@destroy');
+Route::get('requests/{request}/edit', 'RequestController@edit');
+Route::put('requests/{request}', 'RequestController@update');
 Route::post('requests/store', 'RequestController@store');
 Route::get('requests/create', 'RequestController@create');
 Route::get('requests/{request}', 'RequestController@show');
