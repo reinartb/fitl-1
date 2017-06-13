@@ -12,7 +12,11 @@ class Request extends Model {
         'requested_by_section'  => ['required']
     ];
 
-    
+
+    public function items() {
+    	return $this->belongsToMany('App\Item', 'items_requests');
+    }
+
 
 
 

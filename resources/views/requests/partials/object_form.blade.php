@@ -23,3 +23,21 @@
 	{!! Form::label('purpose', 'Purpose of Request:')  !!}
 	{!! Form::textarea('purpose', null,['class' => 'form-control', 'autocomplete' => 'off']) !!}
 </div>
+
+<div class="form-group">
+	{!! Form::label('item_id[]', 'Item List') !!}
+	{!! Form::select(
+		'item_id[]',
+		$item,
+		$request->items->pluck('id'),
+		[
+			'multiple' => true,
+			'class' => 'form-control'
+		]
+	) !!}
+
+</div>
+
+
+
+

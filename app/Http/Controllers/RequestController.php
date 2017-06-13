@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Request as RequestObject;
+use App\Item;
 
 class RequestController extends Controller
 {
@@ -32,6 +33,13 @@ class RequestController extends Controller
         $requestobject = new RequestObject;
         $data = array();
         $data['request'] = $requestobject;
+        $data['item'] = Item::pluck('label', 'id');
+
+        // echo '<pre>';
+        // print_r($data['items']);
+        // echo '</pre>';
+        // exit;
+
         return view('requests.create', $data);
 
     }
@@ -104,7 +112,11 @@ class RequestController extends Controller
     {    
    
         $request = RequestObject::findOrFail($id);
-        return view('requests.edit', ['request' => $request]);
+        $items = Item::lists('label', 'id');
+        return view('requests.edit', [
+            'request' => $request, 
+            'items' => $items
+        ]);
 
     }
 
