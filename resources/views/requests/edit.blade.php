@@ -26,4 +26,5 @@
 
 @include('requests.partials.delete_object')
 
+
 @endsection

@@ -24,6 +24,15 @@ class RequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function search($id, Request $request) {
+
+        // echo $id;
+        // echo $request->q;
+
+    }
+
+
     public function create()
     {
         return view('requests.create', [

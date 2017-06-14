@@ -17,6 +17,9 @@ Route::get('/', function () {
 
 Route::get('about', 'PageController@about');
 
+
+// Route::get('requests/{request}/edit/search', 'RequestController@search');
+
 Route::delete('requests/{request}', 'RequestController@destroy');
 Route::get('requests/{request}/edit', 'RequestController@edit');
 Route::put('requests/{request}', 'RequestController@update');
