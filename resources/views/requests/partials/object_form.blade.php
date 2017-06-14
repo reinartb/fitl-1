@@ -29,7 +29,7 @@
 	{!! Form::select(
 		'item_id[]',
 		$item,
-		$request->items->pluck('id'),
+		$request->items->pluck('id')->all(),
 		[
 			'multiple' => true,
 			'class' => 'form-control'

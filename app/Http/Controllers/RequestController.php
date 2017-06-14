@@ -61,6 +61,8 @@ class RequestController extends Controller
         $requestobject->requested_by_section  = $request->requested_by_section;
         $requestobject->purpose               = $request->purpose;
 
+        
+
         // Create the new request in the database.
         //If code is not successful.
         if(!$requestobject->save()) {
@@ -75,6 +77,8 @@ class RequestController extends Controller
 
         // Object successfully created.
 
+        $requestobject->items()->sync($request->item_id);
+        
         $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was submitted successfully!';
 
         return redirect()
@@ -112,10 +116,10 @@ class RequestController extends Controller
     {    
    
         $request = RequestObject::findOrFail($id);
-        $items = Item::lists('label', 'id');
+        $item = Item::pluck('label', 'id');
         return view('requests.edit', [
             'request' => $request, 
-            'items' => $items
+            'item' => $item
         ]);
 
     }
@@ -139,6 +143,8 @@ class RequestController extends Controller
         $requestobject->requested_by_section  = $request->requested_by_section;
         $requestobject->purpose               = $request->purpose;
 
+
+        $requestobject->items()->sync($request->item_id);
 
         if (!$requestobject->save()) {
             //Redirect back to the create page and pass the errors.
