@@ -16,11 +16,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $requests = RequestObject::all();
-
-        $data = array();
-        $data['requests'] = $requests;        
-        return view('requests.index', $data);
+        return view('requests.index', ['requests' =>  RequestObject::all()]);   
     }
 
     /**
@@ -30,17 +26,10 @@ class RequestController extends Controller
      */
     public function create()
     {
-        $requestobject = new RequestObject;
-        $data = array();
-        $data['request'] = $requestobject;
-        $data['item'] = Item::pluck('name', 'id');
-
-        // echo '<pre>';
-        // print_r($data['items']);
-        // echo '</pre>';
-        // exit;
-
-        return view('requests.create', $data);
+        return view('requests.create', [
+            'request' => new RequestObject,
+            'item' => Item::pluck('name', 'id')
+        ]);
 
     }
 
@@ -61,17 +50,13 @@ class RequestController extends Controller
         $requestobject->requested_by_section  = $request->requested_by_section;
         $requestobject->purpose               = $request->purpose;
 
-        
-
         // Create the new request in the database.
         //If code is not successful.
         if(!$requestobject->save()) {
-            $errors = $requestobject->getErrors();
-
             //Redirect back to the create page and pass the errors.
             return redirect()
                 ->back()
-                ->with('errors', $errors)
+                ->with('errors', $requestobject->getErrors())
                 ->withInput();
         }
 
@@ -94,16 +79,7 @@ class RequestController extends Controller
      */
     public function show($id)
     {
-        $data = array();
-        $request = RequestObject::findOrFail($id);
-        $data['request'] = $request;
-
-        // echo '<pre>';
-        // print_r($data);
-        // echo '</pre>';
-
-
-        return view('requests.show', $data);
+        return view('requests.show', ['request' =>  RequestObject::findOrFail($id)]);
     }
 
     /**
@@ -114,12 +90,10 @@ class RequestController extends Controller
      */
     public function edit($id)
     {    
-   
-        $request = RequestObject::findOrFail($id);
-        $item = Item::pluck('name', 'id');
+
         return view('requests.edit', [
-            'request' => $request, 
-            'item' => $item
+            'request' => RequestObject::findOrFail($id), 
+            'item' => Item::pluck('name', 'id')
         ]);
 
     }
