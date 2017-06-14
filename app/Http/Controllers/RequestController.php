@@ -103,7 +103,7 @@ class RequestController extends Controller
         // echo '</pre>';
 
 
-        return view('requests/show', $data);
+        return view('requests.show', $data);
     }
 
     /**
