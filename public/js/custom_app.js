@@ -6,3 +6,5 @@ $('form.delete-object').submit(function(e) {
 	return deleteConfirmed;
 
 });
+
+

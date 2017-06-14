@@ -14,7 +14,7 @@ class Request extends Model {
 
 
     public function items() {
-    	return $this->belongsToMany('App\Item', 'items_requests');
+    	return $this->belongsToMany('App\Item', 'items_requests')->withPivot('quantity_requested');
     }
 
 

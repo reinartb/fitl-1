@@ -22,7 +22,7 @@
 			<div class="col-md-6">
 				<p class="list-group-item-text"> Purpose: {{ $request->purpose }} </p>
 				<br>
-				<p class="list-group-item-text"> Requested on: {{ $request->created_at }}</p>
+				<p class="list-group-item-text"> Requested on: {{ Carbon\Carbon::parse($request->created_at)->format('F d, Y h:i:s A') }}</p>
 			</div>
 			<div class="col-md-2">
 				<a href="{{ action('RequestController@show', $request->id) }}" class="btn btn-primary">Show</a>

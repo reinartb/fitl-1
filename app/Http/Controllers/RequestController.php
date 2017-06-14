@@ -79,6 +79,16 @@ class RequestController extends Controller
      */
     public function show($id)
     {
+        $request = RequestObject::findOrFail($id);
+        // $s = $request->items;
+
+
+        // echo '<pre>';
+        // print_r($s->quantity_requested);
+        // echo '</pre>';
+
+        // exit;
+
         return view('requests.show', ['request' =>  RequestObject::findOrFail($id)]);
     }
 
@@ -133,7 +143,7 @@ class RequestController extends Controller
         $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was updated successfully!';
 
         return redirect()
-            ->action('RequestController@index')
+            ->action('RequestController@show', $requestobject->id)
             ->with('message', $message);
 
     }

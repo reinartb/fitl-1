@@ -13,6 +13,6 @@ class Item extends Model
     ];
 
     public function requests() {
-    	return $this->belongsToMany('App\Request', 'items_requests');
+    	return $this->belongsToMany('App\Request', 'items_requests')->withPivot('quantity_requested');
     }
 }
