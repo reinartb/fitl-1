@@ -14,7 +14,8 @@
 {!! Form::model($request, 
 	[
 		'action' => ['RequestController@update', $request->id],
-		'method' => 'put'
+		'method' => 'put',
+		'style' => 'display: inline;'
 	]) !!}
 
 @include('requests.partials.object_form')

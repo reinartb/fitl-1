@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="page-header">
+	<a href="{{ action('RequestController@create') }}" class="btn btn-success pull-right">+ Create New RIS</a>
 	<h1>Digital Requisition and Issuance Slips</h1>
 </div>
 

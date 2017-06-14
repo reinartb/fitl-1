@@ -33,7 +33,7 @@ class RequestController extends Controller
         $requestobject = new RequestObject;
         $data = array();
         $data['request'] = $requestobject;
-        $data['item'] = Item::pluck('label', 'id');
+        $data['item'] = Item::pluck('name', 'id');
 
         // echo '<pre>';
         // print_r($data['items']);
@@ -116,7 +116,7 @@ class RequestController extends Controller
     {    
    
         $request = RequestObject::findOrFail($id);
-        $item = Item::pluck('label', 'id');
+        $item = Item::pluck('name', 'id');
         return view('requests.edit', [
             'request' => $request, 
             'item' => $item

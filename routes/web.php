@@ -24,3 +24,5 @@ Route::post('requests/store', 'RequestController@store');
 Route::get('requests/create', 'RequestController@create');
 Route::get('requests/{request}', 'RequestController@show');
 Route::get('requests', 'RequestController@index');
+
+Route::resource('items', 'ItemController');

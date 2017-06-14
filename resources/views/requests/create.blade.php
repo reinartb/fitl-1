@@ -14,7 +14,7 @@
 
 @include('requests.partials.object_form')
 
-<button type="submit" class="btn btn-success btn-lg">Submit Your Request</button>
+<button type="submit" class="btn btn-success">Submit Your Request</button>
 
 
 {!! Form::close() !!}

@@ -9,20 +9,27 @@
 			{!! Form::label('requested_by_section', 'Requested By Section:')  !!}
 			{!! Form::text('requested_by_section', null,['class' => 'form-control', 'placeholder' => 'Section Name', 'autocomplete' => 'off']) !!}
 		</div>
-	</div>
 
-	<div class="col-md-6">
 		<div class="form-group">
 			{!! Form::label('requested_by_user', 'Requested By:')  !!}
 			{!! Form::text('requested_by_user', null,['class' => 'form-control', 'placeholder' => 'What is your name?', 'autocomplete' => 'off']) !!}
 		</div>
 	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			{!! Form::label('purpose', 'Purpose of Request:')  !!}
+			{!! Form::textarea('purpose', null,[
+				'class' => 'form-control', 
+				'autocomplete' => 'off',
+				'rows' => '8'
+			]) !!}
+		</div>
+	</div>
 </div>
 
-<div class="form-group">
-	{!! Form::label('purpose', 'Purpose of Request:')  !!}
-	{!! Form::textarea('purpose', null,['class' => 'form-control', 'autocomplete' => 'off']) !!}
-</div>
+<hr>
+
 
 <div class="form-group">
 	{!! Form::label('item_id[]', 'Item List') !!}
