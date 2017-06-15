@@ -5,10 +5,10 @@
 @section('content')
 
 
-			<div class="page-header">
-				<a href="{{ action('RequestController@edit', $request->id) }}" class="btn btn-warning pull-right">Edit Request</a>
-				<h1>Requisition and Issuance Slip Number: {{ $request->ris_number }}</h1>
-			</div>
+	<div class="page-header">
+		<a href="{{ action('RequestController@edit', $request->id) }}" class="btn btn-warning pull-right">Edit Request</a>
+		<h1>Requisition and Issuance Slip Number: {{ $request->ris_number }}</h1>
+	</div>
 
 	<div class="row">
 		<div class="col-md-8">

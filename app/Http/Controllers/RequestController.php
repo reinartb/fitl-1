@@ -89,6 +89,7 @@ class RequestController extends Controller
     public function show($id)
     {
         $request = RequestObject::findOrFail($id);
+
         // $s = $request->items;
 
 
@@ -98,7 +99,10 @@ class RequestController extends Controller
 
         // exit;
 
-        return view('requests.show', ['request' =>  RequestObject::findOrFail($id)]);
+        return view('requests.show', [
+            'request' =>  RequestObject::findOrFail($id),
+            'items' => Item::all()
+            ]);
     }
 
     /**
@@ -177,4 +181,26 @@ class RequestController extends Controller
             ->with('message', $message);
 
     }
+
+    public function liveSearch(Request $request) {
+
+        $search = $request->id;
+
+        if (is_null($search)) {
+           echo 'Search Invalid.';
+        } else {
+            $items = Item::where('name', 'LIKE', "%{$search}%")
+                            ->get();
+
+            return view('requests.partials.sampleajax')->with('items', $items);
+
+            // foreach ($items as $item) {
+            //      echo $item->name;
+            //      echo '<br>';
+            // }
+        }
+    }
+
+
+
 }
