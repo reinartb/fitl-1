@@ -11,12 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', 'HomeController@index');
 
 Route::get('about', 'PageController@about');
-
 
 // Route::get('requests/{request}/edit/search', 'RequestController@search');
 
@@ -29,3 +30,7 @@ Route::get('requests/{request}', 'RequestController@show');
 Route::get('requests', 'RequestController@index');
 
 Route::resource('items', 'ItemController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
