@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="page-header">
-	<h1>Edit Item</h1>
+	<h1>Create Item</h1>
 </div>
 
 {!! Form::model($item, 

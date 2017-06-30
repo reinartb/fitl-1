@@ -25,7 +25,7 @@ if( ! $items->isEmpty()  ) {
     	                        <td>'.$count++.'</td>
     	                        <td>'.$item->name.'</td>
                                 <td>'.$item->created_at.'</td>
-                                <td><a href="'.$show.'" target="_blank" title="SHOW" ><span class="glyphicon glyphicon-list"></span></a></td>
+                                <td><a href="'.$show.'" title="SHOW" ><span class="glyphicon glyphicon-list"></span></a></td>
                             </tr> 
                         ';
     }  
@@ -37,9 +37,8 @@ if( ! $items->isEmpty()  ) {
      
     echo $outputhead; 
     echo $outputbody; 
-    echo $outputtail; 
+    echo $outputtail;
 } else {  
     echo 'Item Not Found';  
 }
-
 ?>  

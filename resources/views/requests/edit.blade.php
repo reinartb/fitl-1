@@ -40,18 +40,20 @@
 @section('scripts')
 
 	<script>
-	$(document).ready(function(){
-	   $("#search").keyup(function(){
-	       var str=  $("#search").val();
-	       if(str == "") {
-	               $( "#txtHint" ).html("Items will be listed here."); 
-	       }else {
-	               // $( "#txtHint" ).html("Jesus.");
-	               $.get( "{{ url('demos/livesearch?id=') }}"+str, function( data ) {
-	                   $( "#txtHint" ).html( data );  
+	$(document).ready( function() {
+
+
+	   	$("#search").keyup( function() {
+
+	    	var str = $("#search").val();
+	    	if(str == "") {
+	            $( "#txtHint" ).html("Items will be listed here."); 
+	       	} else {
+            	$.get( "{{ url('demos/livesearch?q=') }}"+str, function( data ) {
+                   $( "#txtHint" ).html( data );  
 	            });
-	       }
-	   });  
+	       	}
+	   	});  
 	}); 
 	</script>
 

@@ -12,8 +12,9 @@
 
     <!-- Styles -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> 
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset ('css/select2.min.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('css/custom_1.css') }}"> 
 
 </head>
     <body>
@@ -32,6 +33,7 @@
         <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
         <script src="{{ asset('js/custom_app.js') }}"></script>
+        <script src="{{ asset('js/select2.min.js') }}"></script>
         <!-- <script src="{{ asset('js/app.js') }}"></script> -->
 
         @yield('scripts')

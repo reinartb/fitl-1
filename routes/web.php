@@ -17,6 +17,9 @@
 
 Route::get('/', 'HomeController@index');
 
+Route::get('sample', 'PageController@sample');
+
+
 Route::get('about', 'PageController@about');
 
 // Route::get('requests/{request}/edit/search', 'RequestController@search');
@@ -35,4 +38,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('demos/livesearch','RequestController@liveSearch');
+Route::get('demos/livesearch','RequestController@find');

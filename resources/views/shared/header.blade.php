@@ -37,6 +37,8 @@
                         <li><a href="{{ route('items.create') }}">Create New Item </a></li>
                     </ul>
                 </li>
+                <li><a href="{{ url('sample') }}">Sample</a></li>
+
             </ul>
 
             <!-- Right Side Of Navbar -->

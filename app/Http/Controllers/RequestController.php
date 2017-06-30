@@ -182,25 +182,49 @@ class RequestController extends Controller
 
     }
 
-    public function liveSearch(Request $request) {
+    public function find(Request $request) {
+       
 
-        $search = $request->id;
+        $term = $request->q;
 
-        if (is_null($search)) {
-           echo 'Search Invalid.';
-        } else {
-            $items = Item::where('name', 'LIKE', "%{$search}%")
-                            ->get();
+        if (empty($term)) {
+            return response()->json([]);
+        }
 
-            return view('requests.partials.sampleajax')->with('items', $items);
+        $items = Item::where('name', 'LIKE', '%' . $term . '%')->get();
+
+        foreach ($items as $item) {
+            $item_list[] = ['id' => $item->id, 'text' => $item->name];
+        }
+
+        if (empty($item_list)) {
+            return response()->json([]);
+        }
+
+        return response()->json($item_list);
+
+
+
+        // if (is_null($term)) {
+        //    echo 'Search Invalid.';
+        // } else {
+        //     $items = Item::where('name', 'LIKE', "%{$term}%")
+        //                     ->get();
+            
 
             // foreach ($items as $item) {
             //      echo $item->name;
             //      echo '<br>';
             // }
-        }
-    }
+            // exit;
 
+            
+            // Return View For Intial Test 
+            // return view('requests.partials.sampleajax')->with('items', $items);
+
+            // Return View For AJAX Test
+
+    }
 
 
 }
