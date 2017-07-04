@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Request as RequestObject;
 use App\Item;
+use App\ItemCart;
 
 class RequestController extends Controller
 {
@@ -223,6 +224,93 @@ class RequestController extends Controller
             // return view('requests.partials.sampleajax')->with('items', $items);
 
             // Return View For AJAX Test
+
+    }
+
+    public function addToCart(Request $request) {
+
+        $cart = new ItemCart;
+
+        // Set the cart's object from the submitted form data.
+        $cart->item_id            =     $request->item_id; 
+
+        // Try saving the new cart item.
+
+        if( ! $cart->save() ) { // If save fails, run the code below.
+
+        // Redirect back to the create page and pass the errors.
+        
+            return response()
+                ->json([
+                    'status' => 'success',
+                    'msg' => $cart->getErrors()
+                    ]);
+        }
+
+        // Object successfully created.
+        $message = 'Item with ID ' . $request->item_id . ' was added to cart.';
+
+        $response = [
+            'status' => 'success',
+            'msg' => $message
+        ];  
+
+        // Pass the response as a JSON object.
+        return response()->json($response);
+    }
+
+    public function getitem (Request $request) {
+
+        $itemcarts = ItemCart::all();
+        // $itemcarts->pluck('item_id');
+
+        foreach ($itemcarts as $iz) {
+            $sample = Item::findOrFail($iz->item_id);
+            $cart_list[] = ["item_id" => $iz->item_id, "name" => $sample->name];
+        }
+
+        return response()->json($cart_list);
+
+    }
+
+    public function submitcart (Request $request) {
+
+        $newsample = json_decode($request->sample);
+
+        foreach ($newsample as $x) {
+            $carts[] = $x->item_id;
+        }
+
+        $requestobject = new RequestObject;
+
+        // Set the request's object from the submitted form data.
+
+        $requestobject->ris_number            = '1000-9991';
+        $requestobject->requested_by_user     = 'John';
+        $requestobject->requested_by_section  = 'ADMIN';
+        $requestobject->purpose               = 'Sample';
+
+        // Create the new request in the database.
+        //If code is not successful.
+        if(!$requestobject->save()) {
+            //Redirect back to the create page and pass the errors.
+           return response()
+                ->json([
+                    'status' => 'success',
+                    'msg' => $cart->getErrors()
+                    ]);
+        }
+
+        // Object successfully created.
+        $requestobject->items()->sync($carts);
+
+        $response = [
+            'status' => 'success',
+            'msg' => $carts
+        ];  
+
+        // Pass the response as a JSON object.
+        return response()->json($response);
 
     }
 

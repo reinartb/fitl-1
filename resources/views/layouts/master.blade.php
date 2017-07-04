@@ -36,6 +36,12 @@
         <script src="{{ asset('js/select2.min.js') }}"></script>
         <!-- <script src="{{ asset('js/app.js') }}"></script> -->
 
+        <!-- <script type="text/javascript">
+            $.ajaxSetup({
+               headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+            });
+        </script> -->
+
         @yield('scripts')
 
     </body>

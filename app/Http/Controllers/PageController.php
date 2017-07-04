@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\ItemCart;
 
 class PageController extends Controller {
 
@@ -13,6 +14,11 @@ class PageController extends Controller {
 
 
     public function sample() {	
+
+    	// When sample page loads, all temporary request cart data gets deleted.
+    	ItemCart::getQuery()->delete();
+
+
     	return view ('pages/sample');
 
     }
