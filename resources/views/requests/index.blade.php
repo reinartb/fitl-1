@@ -14,12 +14,12 @@
 	<!-- <a href="{{ url('requests', [$request->id]) }}" class="list-group-item"> -->
 	<div class="list-group-item">	
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<h2 class="list-group-item-heading"> {{ $request->ris_number }} </h2>
 				<p class="list-group-item-text"> {{ $request->requested_by_section }}</p>
 				<p class="list-group-item-text"> Requested by: {{ $request->requested_by_user }}</p>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-7">
 				<p class="list-group-item-text"> Purpose: {{ $request->purpose }} </p>
 				<br>
 				<p class="list-group-item-text"> Requested on: {{ Carbon\Carbon::parse($request->created_at)->format('F d, Y h:i:s A') }}</p>

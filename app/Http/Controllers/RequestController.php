@@ -36,6 +36,9 @@ class RequestController extends Controller
 
     public function create()
     {
+
+        ItemCart::getQuery()->delete();
+
         return view('requests.create', [
             'request' => new RequestObject,
             'item' => Item::pluck('name', 'id')
@@ -60,6 +63,10 @@ class RequestController extends Controller
         $requestobject->requested_by_section  = $request->requested_by_section;
         $requestobject->purpose               = $request->purpose;
 
+
+        $cart_items = ItemCart::all();
+        $cart_items_array = $cart_items->pluck('item_id');
+
         // Create the new request in the database.
         //If code is not successful.
         if(!$requestobject->save()) {
@@ -71,8 +78,10 @@ class RequestController extends Controller
         }
 
         // Object successfully created.
+        $requestobject->items()->sync($cart_items_array);
 
-        $requestobject->items()->sync($request->item_id);
+        // When new request is completed successfully, all temporary request cart data gets deleted.
+        ItemCart::getQuery()->delete();
         
         $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was submitted successfully!';
 
@@ -115,9 +124,31 @@ class RequestController extends Controller
     public function edit($id)
     {    
 
+        /** 
+            When edit page  is opened, all temporary request cart data
+            gets deleted and gets filled with the current items in the
+            request.           
+
+        **/
+        ItemCart::getQuery()->delete();
+
+        $requestobject = RequestObject::findOrFail($id);
+
+        foreach ($requestobject->items as $item) {
+            $cart_item = new ItemCart;
+            $cart_item->item_id = $item->id;
+
+            if( ! $cart_item->save() ) { // If save fails, run the code below.
+                // Redirect back to the create page and pass the errors.
+                return redirect()
+                    ->back()
+                    ->with('errors', $cart_item->getErrors())
+                    ->withInput();
+                }
+        }
+
         return view('requests.edit', [
-            'request' => RequestObject::findOrFail($id), 
-            'item' => Item::pluck('name', 'id')
+            'request' => $requestobject
         ]);
 
     }
@@ -129,6 +160,7 @@ class RequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
 
@@ -141,8 +173,10 @@ class RequestController extends Controller
         $requestobject->requested_by_section  = $request->requested_by_section;
         $requestobject->purpose               = $request->purpose;
 
+        $cart_items = ItemCart::all();
+        $cart_items_array = $cart_items->pluck('item_id');
 
-        $requestobject->items()->sync($request->item_id);
+        $requestobject->items()->sync($cart_items_array);
 
         if (!$requestobject->save()) {
             //Redirect back to the create page and pass the errors.
@@ -155,6 +189,9 @@ class RequestController extends Controller
          // Object successfully created.
 
         $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was updated successfully!';
+
+        // Delete all items in temporary cart after completing update.
+        ItemCart::getQuery()->delete();
 
         return redirect()
             ->action('RequestController@show', $requestobject->id)
@@ -172,10 +209,12 @@ class RequestController extends Controller
     {
         $requestobject = RequestObject::findOrFail($id);
         
-
         $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was deleted successfully!';
 
         $requestobject->delete();
+
+        // Delete all items in temporary cart after completing delete.
+        ItemCart::getQuery()->delete();
 
         return redirect()
             ->action('RequestController@index')
@@ -184,7 +223,6 @@ class RequestController extends Controller
     }
 
     public function find(Request $request) {
-       
 
         $term = $request->q;
 
@@ -229,17 +267,20 @@ class RequestController extends Controller
 
     public function addToCart(Request $request) {
 
+        // Search for the item object of the item requested.
+        $item_requested = Item::findOrFail($request->item_id);
+
+        // Create new item object in the temporary cart.
         $cart = new ItemCart;
 
         // Set the cart's object from the submitted form data.
-        $cart->item_id            =     $request->item_id; 
+        $cart->item_id            =     $item_requested->id;
+
 
         // Try saving the new cart item.
-
         if( ! $cart->save() ) { // If save fails, run the code below.
 
         // Redirect back to the create page and pass the errors.
-        
             return response()
                 ->json([
                     'status' => 'success',
@@ -248,7 +289,26 @@ class RequestController extends Controller
         }
 
         // Object successfully created.
-        $message = 'Item with ID ' . $request->item_id . ' was added to cart.';
+        $message = 'Item named '. $item_requested->name . ' with ID ' . $item_requested->id . ' was added to cart.';
+
+        $response = [
+            'status' => 'success',
+            'msg' => $message,
+            'item_id' => $item_requested->id,
+            'item_name' => $item_requested->name
+        ];  
+
+        // Pass the response as a JSON object.
+        return response()->json($response);
+    }
+
+    public function deleteCartItem(Request $request)
+    {    
+        $cart_item = ItemCart::findOrFail($request->item_id);
+        
+        $message = 'Item was successfully removed from cart!';
+
+        $cart_item->delete();
 
         $response = [
             'status' => 'success',
@@ -257,62 +317,7 @@ class RequestController extends Controller
 
         // Pass the response as a JSON object.
         return response()->json($response);
-    }
-
-    public function getitem (Request $request) {
-
-        $itemcarts = ItemCart::all();
-        // $itemcarts->pluck('item_id');
-
-        foreach ($itemcarts as $iz) {
-            $sample = Item::findOrFail($iz->item_id);
-            $cart_list[] = ["item_id" => $iz->item_id, "name" => $sample->name];
-        }
-
-        return response()->json($cart_list);
 
     }
-
-    public function submitcart (Request $request) {
-
-        $newsample = json_decode($request->sample);
-
-        foreach ($newsample as $x) {
-            $carts[] = $x->item_id;
-        }
-
-        $requestobject = new RequestObject;
-
-        // Set the request's object from the submitted form data.
-
-        $requestobject->ris_number            = '1000-9991';
-        $requestobject->requested_by_user     = 'John';
-        $requestobject->requested_by_section  = 'ADMIN';
-        $requestobject->purpose               = 'Sample';
-
-        // Create the new request in the database.
-        //If code is not successful.
-        if(!$requestobject->save()) {
-            //Redirect back to the create page and pass the errors.
-           return response()
-                ->json([
-                    'status' => 'success',
-                    'msg' => $cart->getErrors()
-                    ]);
-        }
-
-        // Object successfully created.
-        $requestobject->items()->sync($carts);
-
-        $response = [
-            'status' => 'success',
-            'msg' => $carts
-        ];  
-
-        // Pass the response as a JSON object.
-        return response()->json($response);
-
-    }
-
 
 }

@@ -11,7 +11,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-4">
 		<h2>Request Details</h2>
 			<!-- <table class="table">
 				<thead>
@@ -59,7 +59,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-8">
 			<h2>Items Requested</h2>
 			<table class="table clickable-row">
 				<thead>

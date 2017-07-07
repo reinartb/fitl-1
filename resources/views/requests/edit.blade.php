@@ -12,7 +12,7 @@
 </div>
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-4">
 		{!! Form::model($request, 
 		[
 			'action' => ['RequestController@update', $request->id],
@@ -29,7 +29,7 @@
 	</div>
 
 
-	<div class="col-md-6">
+	<div class="col-md-8">
 		@include('requests.partials.search_items_form')
 	</div>
 </div>
@@ -40,21 +40,70 @@
 @section('scripts')
 
 	<script>
-	$(document).ready( function() {
+	
+
+	$('#addrequest').on('submit', function(e) {
+	       	e.preventDefault();
+
+			var data = $('#item_list').select2('data');
+
+	       	$.ajax({
+	           	type: 'POST',
+	           	url: '{{ url("additem") }}',
+	           	dataType: 'json',
+	           	data: {item_id: data[0].id},
+	           	headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    },
+	           	success: function( response ) {
+
+					var newRowContent = 
+						"<tr> <td>" + response.item_id + 
+						"</td> <td>" + response.item_name + 
+						"</td> <td> Delete Button </td> </tr>" ;
+
+					$("#wtf").append(newRowContent);
+
+	           		alert (response.msg);
+	            	// $("body").append("<div>"+ msg.msg +"</div>");
+	        	}
+	       	});
+	    });
 
 
-	   	$("#search").keyup( function() {
 
-	    	var str = $("#search").val();
-	    	if(str == "") {
-	            $( "#txtHint" ).html("Items will be listed here."); 
-	       	} else {
-            	$.get( "{{ url('demos/livesearch?q=') }}"+str, function( data ) {
-                   $( "#txtHint" ).html( data );  
-	            });
-	       	}
-	   	});  
-	}); 
+	    $('#item_list').select2({
+			placeholder: "Search Item . . .",
+		    minimumInputLength: 2,
+
+			ajax: {
+				url: '{{ url("searchitem") }}',
+		        dataType: 'json',
+		        delay: 500,
+		        data: function (params) {
+		            return {
+		                q: $.trim(params.term)
+		            };
+		        },
+		        processResults: function (data) {
+		            return { results: data };
+
+		        },
+				cache: true
+			},
+
+			language: {
+		    	noResults: function() {
+		        	return "No Results Found. <a href='http://google.com'>Add Item?</a>";
+		    	}
+			},
+			escapeMarkup: function (markup) {
+				return markup;
+			}
+		});
+
+
+
 	</script>
 
 @endsection
