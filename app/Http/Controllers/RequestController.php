@@ -65,7 +65,19 @@ class RequestController extends Controller
 
 
         $cart_items = ItemCart::all();
-        $cart_items_array = $cart_items->pluck('item_id');
+
+        $cart_items_item_id = $cart_items->pluck('item_id')->toArray();
+
+        $cart_items_quantity_requested = $cart_items->pluck('quantity_requested')->toArray();
+        
+        $cart_item_combine = array_combine($cart_items_item_id, $cart_items_quantity_requested);
+
+        $sync = [];
+
+
+        foreach ($cart_item_combine as $x => $y) {
+            $sync[$x] = ['quantity_requested' => $y];
+        }
 
         // Create the new request in the database.
         //If code is not successful.
@@ -78,7 +90,7 @@ class RequestController extends Controller
         }
 
         // Object successfully created.
-        $requestobject->items()->sync($cart_items_array);
+        $requestobject->items()->sync($sync);
 
         // When new request is completed successfully, all temporary request cart data gets deleted.
         ItemCart::getQuery()->delete();
@@ -137,6 +149,7 @@ class RequestController extends Controller
         foreach ($requestobject->items as $item) {
             $cart_item = new ItemCart;
             $cart_item->item_id = $item->id;
+            $cart_item->quantity_requested = $item->quantity_requested;
 
             if( ! $cart_item->save() ) { // If save fails, run the code below.
                 // Redirect back to the create page and pass the errors.
@@ -173,20 +186,36 @@ class RequestController extends Controller
         $requestobject->requested_by_section  = $request->requested_by_section;
         $requestobject->purpose               = $request->purpose;
 
+
         $cart_items = ItemCart::all();
-        $cart_items_array = $cart_items->pluck('item_id');
 
-        $requestobject->items()->sync($cart_items_array);
+        $cart_items_item_id = $cart_items->pluck('item_id')->toArray();
 
-        if (!$requestobject->save()) {
+        $cart_items_quantity_requested = $cart_items->pluck('quantity_requested')->toArray();
+        
+        $cart_item_combine = array_combine($cart_items_item_id, $cart_items_quantity_requested);
+
+        $sync = [];
+
+
+        foreach ($cart_item_combine as $x => $y) {
+            $sync[$x] = ['quantity_requested' => $y];
+        }
+
+        $requestobject->items()->sync($sync);
+
+        // Create the new request in the database.
+        //If code is not successful.
+        if(!$requestobject->save()) {
             //Redirect back to the create page and pass the errors.
             return redirect()
                 ->back()
                 ->with('errors', $requestobject->getErrors())
                 ->withInput();
-        }   
+        }
 
-         // Object successfully created.
+        // Object successfully created.
+
 
         $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was updated successfully!';
 
@@ -267,24 +296,39 @@ class RequestController extends Controller
 
     public function addToCart(Request $request) {
 
+        $cart = ItemCart::all()->pluck('item_id');
+
+        // Checks if item to be added into cart is already inside the cart.
+        foreach ($cart as $c) {
+            if ($c == $request->item_id) {
+                $response = [
+                    'status' => 'fail',
+                    'msg' => 'Item already exists inside cart.'
+                ];
+
+                return response()->json($response);
+            }
+        }
+
+
         // Search for the item object of the item requested.
         $item_requested = Item::findOrFail($request->item_id);
 
         // Create new item object in the temporary cart.
-        $cart = new ItemCart;
+        $item_cart = new ItemCart;
 
         // Set the cart's object from the submitted form data.
-        $cart->item_id            =     $item_requested->id;
+        $item_cart->item_id            =     $item_requested->id;
 
 
         // Try saving the new cart item.
-        if( ! $cart->save() ) { // If save fails, run the code below.
+        if( ! $item_cart->save() ) { // If save fails, run the code below.
 
         // Redirect back to the create page and pass the errors.
             return response()
                 ->json([
                     'status' => 'success',
-                    'msg' => $cart->getErrors()
+                    'msg' => $item_cart->getErrors()
                     ]);
         }
 
@@ -304,9 +348,12 @@ class RequestController extends Controller
 
     public function deleteCartItem(Request $request)
     {    
-        $cart_item = ItemCart::findOrFail($request->item_id);
-        
-        $message = 'Item was successfully removed from cart!';
+
+        $cart_item = ItemCart::where('item_id', $request->item_id)->first();
+
+        $message = 'Item with ID '. $cart_item->item_id .' was successfully removed from cart!';
+        // $message = 'Yay!';
+        // $message = $cart_item->item_id;
 
         $cart_item->delete();
 
@@ -317,6 +364,30 @@ class RequestController extends Controller
 
         // Pass the response as a JSON object.
         return response()->json($response);
+
+    }
+
+    public function submitRequest (Request $request)
+    {
+
+        $cart = ItemCart::all();
+
+        $newarray = array_combine($request->item_id, $request->quantity_requested);
+
+        // Checks if item to be added into cart is already inside the cart.
+        foreach ($newarray as $k => $v) {
+            foreach ($cart as $c) {
+                if ($c->item_id == $k) {
+                    $c->quantity_requested = $v;
+                    $c->save();
+                }
+            }
+        }
+
+        return response()->json([
+                'status' => 'success'
+            ]);
+
 
     }
 

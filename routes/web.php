@@ -41,3 +41,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('searchitem','RequestController@find');
 Route::post('additem', 'RequestController@addToCart');
 Route::delete('deleteitem', 'RequestController@deleteCartItem');
+
+Route::post('submitrequest', 'RequestController@submitRequest');

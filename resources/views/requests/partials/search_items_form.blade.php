@@ -34,11 +34,17 @@
 	<thead>
 		<th>Item ID</th>
 		<th>Item Name</th>
+		<th>Quantity Requested </th>
 		<th>Options</th>
 	</thead>
-	<tbody id="wtf">
+	<tbody id="search-results-table">
 		@foreach ($request->items as $item)
-			<tr> <td> {{ $item->id }} </td> <td> {{ $item->name }} </td> <td> Delete Button </td> </tr>
+			<tr> 
+				<td> {{ $item->id }} </td> 
+				<td> {{ $item->name }} </td> 
+				<td> <input type="number" value="{{ $item->pivot->quantity_requested }}"> </td>
+				<td> <button id="item-delete-{{ $item->id}}" class="btn btn-danger btn-sm"> Delete</button></td> 
+			</tr>
 		@endforeach
 	</tbody>
 </table>
