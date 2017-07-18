@@ -271,27 +271,6 @@ class RequestController extends Controller
 
         return response()->json($item_list);
 
-
-
-        // if (is_null($term)) {
-        //    echo 'Search Invalid.';
-        // } else {
-        //     $items = Item::where('name', 'LIKE', "%{$term}%")
-        //                     ->get();
-            
-
-            // foreach ($items as $item) {
-            //      echo $item->name;
-            //      echo '<br>';
-            // }
-            // exit;
-
-            
-            // Return View For Intial Test 
-            // return view('requests.partials.sampleajax')->with('items', $items);
-
-            // Return View For AJAX Test
-
     }
 
     public function addToCart(Request $request) {

@@ -59,18 +59,18 @@
 		$('#submitrequest').on('submit', function(e) {
 			e.preventDefault();
 
-				var array_quantity_requested = [];
-				var array_item_id = [];
+			var array_quantity_requested = [];
+			var array_item_id = [];
 
-				$('#search-results-table tr input').each( function () {
+			$('#search-results-table tr input').each( function () {
 
-					var item_id = $(this).parent().parent().find('[id*=delete]').attr('id').substring(12);
-					array_item_id.push(item_id);
+				var item_id = $(this).parent().parent().find('[id*=delete]').attr('id').substring(12);
+				array_item_id.push(item_id);
 
-					array_quantity_requested.push(this.value);
-				});
-				
-				$.ajax({
+				array_quantity_requested.push(this.value);
+			});
+			
+			$.ajax({
 	           	type: 'POST',
 	           	url: '{{ url("submitrequest") }}',
 	           	dataType: 'json',
@@ -85,11 +85,13 @@
 	           		}
 	           	}
 
-	       	});
+	       	}).done( function () {
+	           		$('#submitrequest').unbind('submit').submit();	
+           	});
 
-		    setTimeout(function() {
-			    $('#updaterequest').unbind('submit').submit();	
-		    }, 1000);
+		    // setTimeout(function() {
+			   //  $('#submitrequest').unbind('submit').submit();	
+		    // }, 1000);
 		});
 
 

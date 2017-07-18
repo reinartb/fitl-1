@@ -19,7 +19,7 @@
 			'action' => ['RequestController@update', $request->id],
 			'method' => 'put',
 			'style' => 'display: inline;',
-			'id' => 'updaterequest'
+			'id' => 'submitrequest'
 		]) !!}
 		
 		@include('requests.partials.object_form')
@@ -42,42 +42,60 @@
 
 	<script>
 	
-		$('#updaterequest').on('submit', function(e) {
+		$('#submitrequest').on('submit', function(e) {
 			e.preventDefault();
 
-				var array_quantity_requested = [];
-				var array_item_id = [];
+			var array_quantity_requested = [];
+			var array_item_id = [];
+			var invalid = false;
 
-				$('#search-results-table tr input').each( function () {
+			$('#search-results-table tr input').each( function () {
+				var item_id = $(this).parent().parent().find('[id*=delete]').attr('id').substring(12);
+				array_item_id.push(item_id);
 
-					var item_id = $(this).parent().parent().find('[id*=delete]').attr('id').substring(12);
-					array_item_id.push(item_id);
+				if (this.value.length == 0) {
+					var message = 'The item with Item ID ' + item_id + ' has no quantity requested.';
+					alert (message);
+					invalid = true;
+				} else {
+					array_quantity_requested.push(this.value);				
+				}
 
-					array_quantity_requested.push(this.value);
-				});
+			});
 
+			// for (i = 0; i < array_quantity_requested.length; i++) {
+			// 	if (array_quantity_requested[i].val().trim().length == 0) {
+			// 		alert ("Please fill all input fields!");
+			// 		return false;
+			// 	}
+			// }
+
+			if (invalid) {
+				return false;
+			}
+
+			if ( array_quantity_requested.length > 0 ) {
 				$.ajax({
-	           	type: 'POST',
-	           	url: '{{ url("submitrequest") }}',
-	           	dataType: 'json',
-	           	data: {item_id: array_item_id, quantity_requested: array_quantity_requested},
-	           	headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    },
-	           	success: function( response ) {
-	           		// Checks if item was successfully added to cart.
-	           		if (response.status != 'success') {
-	           			alert (response.msg);
-	           		}           			         
-	        	}
+		           	type: 'POST',
+		           	url: '{{ url("submitrequest") }}',
+		           	dataType: 'json',
+		           	data: {item_id: array_item_id, quantity_requested: array_quantity_requested},
+		           	headers: {
+				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    },
+		           	success: function( response ) {
+		           		// Checks if item was successfully added to cart.
+		           		if (response.status != 'success') {
+		           			alert (response.msg);
+		           		}           			         
+		        	}
 
-	       	});
-
-		    setTimeout(function() {
-			    $('#updaterequest').unbind('submit').submit();	
-		    }, 1000);
-
-
+		       	}).done( function () {
+		       		$('#submitrequest').unbind('submit').submit();
+		       	});
+			} else {
+				alert ('No items were added to the request. Please add items.');
+			}
 		});
 
 
@@ -113,8 +131,8 @@
 						$("#search-results-table").append(newRowContent);
 	           		}
 
-	           			// If not successful, return error message from Controller.
-	           			alert (response.msg);	         
+           			// If not successful, return error message from Controller.
+           			alert (response.msg);	         
 
 	        	}
 
@@ -168,7 +186,7 @@
 
 			language: {
 		    	noResults: function() {
-		        	return "No Results Found. <a href='http://google.com'>Add Item?</a>";
+		        	return "No Results Found. <a href='{{ url('items/create') }}'>Add Item?</a>";
 		    	}
 			},
 			escapeMarkup: function (markup) {
