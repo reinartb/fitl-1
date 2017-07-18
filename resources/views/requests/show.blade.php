@@ -42,7 +42,11 @@
 			<div class="list-group">
 				<div class="list-group-item">
 					<h4>Requested By Section:</h4>
-					<p>{{ $request->requested_by_section }}</p>
+					<p>
+						{{ $request->section->short_name }}
+						<br>
+						{{ $request->section->long_name }}
+					</p>
 				</div>
 				<div class="list-group-item">
 					<h4>Requested By User: </h4>

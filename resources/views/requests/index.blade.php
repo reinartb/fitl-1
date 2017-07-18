@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-md-3">
 				<h2 class="list-group-item-heading"> {{ $request->ris_number }} </h2>
-				<p class="list-group-item-text"> {{ $request->requested_by_section }}</p>
+				<p class="list-group-item-text"> {{ $request->section->short_name }}</p>
 				<p class="list-group-item-text"> Requested by: {{ $request->requested_by_user }}</p>
 			</div>
 			<div class="col-md-7">

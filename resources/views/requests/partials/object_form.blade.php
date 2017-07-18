@@ -13,7 +13,7 @@
 
 			<select class="form-control" name="requested_by_section" id="section_list" style="width: 100%">
 				@if ($request->requested_by_section)
-					<option value="{{ $request->requested_by_section }}">Samples</option>
+					<option value="{{ $request->section->id }}">{{ $request->section->short_name }}</option>
 				@endif
 
 			</select>

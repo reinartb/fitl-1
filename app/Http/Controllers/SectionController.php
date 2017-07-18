@@ -55,7 +55,7 @@ class SectionController extends Controller
         $message = 'New section with the Code ' . $section->short_name . '  has successfully been added to the database.';
 
         return redirect()
-            ->action('SectionController@index')
+            ->route('section.index')
             ->with('message', $message);
     }
 
@@ -78,7 +78,10 @@ class SectionController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('sections.edit', 
+            [
+                'section' => Section::findOrFail($id)
+            ]);
     }
 
     /**
@@ -90,7 +93,23 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $section = Section::findOrFail($id);
+
+        $section->short_name        =   $request->short_name;
+        $section->long_name         =   $request->long_name;
+
+        if ( ! $section->save() ) {
+            return redirect()
+                ->back()
+                ->with('errors', $section->getErrors())
+                ->withInput();
+        }
+
+        $message = 'Section with code ' . $section->short_name . ' was successfully updated.';
+
+        return redirect()
+            ->route('sections.index')
+            ->with('message', $message);
     }
 
     /**

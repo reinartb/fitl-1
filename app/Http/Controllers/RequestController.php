@@ -96,7 +96,9 @@ class RequestController extends Controller
         // When new request is completed successfully, all temporary request cart data gets deleted.
         ItemCart::getQuery()->delete();
         
-        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was submitted successfully!';
+
+
+        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->section->long_name . ' Section with the RIS Number ' . $requestobject->ris_number . ' was submitted successfully!';
 
         return redirect()
             ->action('RequestController@index')
@@ -218,7 +220,7 @@ class RequestController extends Controller
         // Object successfully created.
 
 
-        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was updated successfully!';
+        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->section->long_name . ' Section with the RIS Number ' . $requestobject->ris_number . ' was updated successfully!';
 
         // Delete all items in temporary cart after completing update.
         ItemCart::getQuery()->delete();
@@ -239,7 +241,7 @@ class RequestController extends Controller
     {
         $requestobject = RequestObject::findOrFail($id);
         
-        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->requested_by_section . ' Section with the RIS Number ' . $requestobject->ris_number . ' was deleted successfully!';
+        $message = 'Request by ' . $requestobject->requested_by_user . ' from ' . $requestobject->section->long_name . ' Section with the RIS Number ' . $requestobject->ris_number . ' was deleted successfully!';
 
         $requestobject->delete();
 
@@ -313,7 +315,7 @@ class RequestController extends Controller
         }
 
         // Object successfully created.
-        $message = 'Item named '. $item_requested->name . ' with ID ' . $item_requested->id . ' was added to cart.';
+        $message = 'Item named '. $item_requested->name . ' with ID ' . $item_requested->id . ' was added to the request.';
 
         $response = [
             'status' => 'success',
@@ -331,7 +333,7 @@ class RequestController extends Controller
 
         $cart_item = ItemCart::where('item_id', $request->item_id)->first();
 
-        $message = 'Item with ID '. $cart_item->item_id .' was successfully removed from cart!';
+        $message = 'Item with ID '. $cart_item->item_id .' was successfully removed from the request!';
         // $message = 'Yay!';
         // $message = $cart_item->item_id;
 

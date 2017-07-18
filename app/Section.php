@@ -11,5 +11,8 @@ class Section extends Model
     	'long_name'		=>	['required']
     ];
 
+    public function requests () {
+    	return $this->hasMany('App\Request');
+    }
 
 }
