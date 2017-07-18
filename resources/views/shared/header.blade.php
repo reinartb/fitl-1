@@ -37,6 +37,15 @@
                         <li><a href="{{ route('items.create') }}">Create New Item </a></li>
                     </ul>
                 </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Section Module&nbsp&nbsp<span class="caret" aria-hidden="true"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route('sections.index') }}">Show All Section</a></li>
+                        <li><a href="{{ route('sections.create') }}">Create New Section</a></li>
+                    </ul>
+                </li>
+
                 <li><a href="{{ url('sample') }}">Sample</a></li>
 
             </ul>

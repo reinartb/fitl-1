@@ -8,7 +8,16 @@
 
 		<div class="form-group">
 			{!! Form::label('requested_by_section', 'Requested By Section:')  !!}
-			{!! Form::text('requested_by_section', null,['class' => 'form-control', 'placeholder' => 'Section Name', 'autocomplete' => 'off']) !!}
+			
+			<br>
+
+			<select class="form-control" name="requested_by_section" id="section_list" style="width: 100%">
+				@if ($request->requested_by_section)
+					<option value="{{ $request->requested_by_section }}">Samples</option>
+				@endif
+
+			</select>
+
 		</div>
 
 		<div class="form-group">

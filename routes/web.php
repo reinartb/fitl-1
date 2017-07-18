@@ -32,14 +32,19 @@ Route::get('requests/create', 'RequestController@create');
 Route::get('requests/{request}', 'RequestController@show');
 Route::get('requests', 'RequestController@index');
 
+Route::get('searchitem','RequestController@find');
+Route::post('additem', 'RequestController@addToCart');
+Route::delete('deleteitem', 'RequestController@deleteCartItem');
+Route::post('submitrequest', 'RequestController@submitRequest');
+
+
 Route::resource('items', 'ItemController');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('searchitem','RequestController@find');
-Route::post('additem', 'RequestController@addToCart');
-Route::delete('deleteitem', 'RequestController@deleteCartItem');
 
-Route::post('submitrequest', 'RequestController@submitRequest');
+Route::resource('sections', 'SectionController');
+
+Route::get('section/select2-search', 'SectionController@find');

@@ -38,60 +38,61 @@
 
 
 	<script>
-
-		/*****************
-		DESCRIPTION
-		--------------
-		This Javascript function adds items to the itemcart table when a user clicks 
-		on the submit button with the ID "addrequest".
-		
-		First, the Javascript finds the selected item based on the Select2 option
-		by the user. 
-
-		It then runs an AJAX request that adds the selected item's ITEM ID and 
-		adds it in the itemcart table.
-
-		After the AJAX is successfully run, it adds a new row in the "Items Requested"
-		table.
-
-		*****************/
-
+	
 		$('#submitrequest').on('submit', function(e) {
 			e.preventDefault();
 
 			var array_quantity_requested = [];
 			var array_item_id = [];
+			var invalid = false;
 
 			$('#search-results-table tr input').each( function () {
-
 				var item_id = $(this).parent().parent().find('[id*=delete]').attr('id').substring(12);
 				array_item_id.push(item_id);
 
-				array_quantity_requested.push(this.value);
+				if (this.value.length == 0) {
+					var message = 'The item with Item ID ' + item_id + ' has no quantity requested.';
+					alert (message);
+					invalid = true;
+				} else {
+					array_quantity_requested.push(this.value);				
+				}
+
 			});
-			
-			$.ajax({
-	           	type: 'POST',
-	           	url: '{{ url("submitrequest") }}',
-	           	dataType: 'json',
-	           	data: {item_id: array_item_id, quantity_requested: array_quantity_requested},
-	           	headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    },
-	           	success: function( response ) {
-	           		// Checks if item was successfully added to cart.
-	           		if (response.status != 'success') {
-	           			alert (response.msg);	         
-	           		}
-	           	}
 
-	       	}).done( function () {
-	           		$('#submitrequest').unbind('submit').submit();	
-           	});
+			// for (i = 0; i < array_quantity_requested.length; i++) {
+			// 	if (array_quantity_requested[i].val().trim().length == 0) {
+			// 		alert ("Please fill all input fields!");
+			// 		return false;
+			// 	}
+			// }
 
-		    // setTimeout(function() {
-			   //  $('#submitrequest').unbind('submit').submit();	
-		    // }, 1000);
+			if (invalid) {
+				return false;
+			}
+
+			if ( array_quantity_requested.length > 0 ) {
+				$.ajax({
+		           	type: 'POST',
+		           	url: '{{ url("submitrequest") }}',
+		           	dataType: 'json',
+		           	data: {item_id: array_item_id, quantity_requested: array_quantity_requested},
+		           	headers: {
+				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    },
+		           	success: function( response ) {
+		           		// Checks if item was successfully added to cart.
+		           		if (response.status != 'success') {
+		           			alert (response.msg);
+		           		}           			         
+		        	}
+
+		       	}).done( function () {
+		       		$('#submitrequest').unbind('submit').submit();
+		       	});
+			} else {
+				alert ('No items were added to the request. Please add items.');
+			}
 		});
 
 
@@ -127,8 +128,8 @@
 						$("#search-results-table").append(newRowContent);
 	           		}
 
-	           			// If not successful, return error message from Controller.
-	           			alert (response.msg);	         
+           			// If not successful, return error message from Controller.
+           			alert (response.msg);	         
 
 	        	}
 
@@ -182,13 +183,45 @@
 
 			language: {
 		    	noResults: function() {
-		        	return "No Results Found. <a href='http://google.com'>Add Item?</a>";
+		        	return "No Results Found. <a href='{{ url('items/create') }}'>Add Item?</a>";
 		    	}
 			},
 			escapeMarkup: function (markup) {
 				return markup;
 			}
 		});
+
+
+	    $('#section_list').select2({
+			placeholder: "Search Sections . . .",
+		    minimumInputLength: 2,
+
+			ajax: {
+				url: '{{ url("section/select2-search") }}',
+		        dataType: 'json',
+		        delay: 500,
+		        data: function (params) {
+		            return {
+		                q: $.trim(params.term)
+		            };
+		        },
+		        processResults: function (data) {
+		            return { results: data };
+
+		        },
+				cache: true
+			},
+
+			language: {
+		    	noResults: function() {
+		        	return "No Results Found. <a href='{{ route('sections.create') }}'>Add Section?</a>";
+		    	}
+			},
+			escapeMarkup: function (markup) {
+				return markup;
+			}
+		});
+
 
 	</script>
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Request as RequestObject;
 use App\Item;
 use App\ItemCart;
+use App\Section;
 
 class RequestController extends Controller
 {

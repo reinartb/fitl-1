@@ -194,6 +194,38 @@
 			}
 		});
 
+
+	    $('#section_list').select2({
+			placeholder: "Search Sections . . .",
+		    minimumInputLength: 2,
+
+			ajax: {
+				url: '{{ url("section/select2-search") }}',
+		        dataType: 'json',
+		        delay: 500,
+		        data: function (params) {
+		            return {
+		                q: $.trim(params.term)
+		            };
+		        },
+		        processResults: function (data) {
+		            return { results: data };
+
+		        },
+				cache: true
+			},
+
+			language: {
+		    	noResults: function() {
+		        	return "No Results Found. <a href='{{ route('sections.create') }}'>Add Section?</a>";
+		    	}
+			},
+			escapeMarkup: function (markup) {
+				return markup;
+			}
+		});
+
+
 	</script>
 
 @endsection
