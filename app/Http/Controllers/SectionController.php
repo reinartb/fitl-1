@@ -52,10 +52,10 @@ class SectionController extends Controller
                 ->withInput();
         }
 
-        $message = 'New section with the Code ' . $section->short_name . '  has successfully been added to the database.';
+        $message = 'New section with the code ' . $section->short_name . '  has successfully been added to the database.';
 
         return redirect()
-            ->route('section.index')
+            ->route('sections.index')
             ->with('message', $message);
     }
 
@@ -141,10 +141,10 @@ class SectionController extends Controller
         }
 
 
-        $sections = Section::where('short_name', 'LIKE', '%' . $term . '%')->get();
+        $sections = Section::where('short_name', 'LIKE', '%' . $term . '%')->orWhere('long_name', 'LIKE', '%' . $term . '%')->get();
 
         foreach ($sections as $section) {
-            $section_list[] = ['id' => $section->id, 'text' => $section->short_name];
+            $section_list[] = ['id' => $section->id, 'text' => $section->short_name . ' - ' . $section->long_name];
         }
 
         if (empty($section_list)) {

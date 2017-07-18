@@ -50,31 +50,31 @@
 			var invalid = false;
 
 			$('#search-results-table tr input').each( function () {
-				var item_id = $(this).parent().parent().find('[id*=delete]').attr('id').substring(12);
-				array_item_id.push(item_id);
+				// Gets item ID from the input field and pushes it into an array of all Item IDs.
+				
+                var item_id = $(this).attr('item-id');
+                
+                array_item_id.push(item_id);
 
-				if (this.value.length == 0) {
+				// Checks if quantity requested field has a value or not.
+				if (this.value.length == 0) { // If no value, message is passed and the invalid variable comes true.
 					var message = 'The item with Item ID ' + item_id + ' has no quantity requested.';
 					alert (message);
 					invalid = true;
-				} else {
+				} else { // If value is present, value inside input field is passed into an array.
 					array_quantity_requested.push(this.value);				
 				}
-
 			});
 
-			// for (i = 0; i < array_quantity_requested.length; i++) {
-			// 	if (array_quantity_requested[i].val().trim().length == 0) {
-			// 		alert ("Please fill all input fields!");
-			// 		return false;
-			// 	}
-			// }
-
+			// This stops the Javascript and exists the function when there is no value in
+			// the quantity requested field above.
 			if (invalid) {
 				return false;
 			}
 
-			if ( array_quantity_requested.length > 0 ) {
+			// Checks if there are actually items inside the cart.
+			if ( array_quantity_requested.length > 0 ) { // If there are items, Item IDs and respective quantity
+														 // requested are submitted to controller using Ajax.
 				$.ajax({
 		           	type: 'POST',
 		           	url: '{{ url("submitrequest") }}',
@@ -84,16 +84,16 @@
 				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				    },
 		           	success: function( response ) {
-		           		// Checks if item was successfully added to cart.
+		           		// Checks if items were successfully added to the temporary itemcart table.
 		           		if (response.status != 'success') {
 		           			alert (response.msg);
 		           		}           			         
 		        	}
 
-		       	}).done( function () {
+		       	}).done( function () { // After successfully performing the Ajax, the form is told to continue with it submit operation.
 		       		$('#submitrequest').unbind('submit').submit();
 		       	});
-			} else {
+			} else { // If no items in cart, alert the message below.
 				alert ('No items were added to the request. Please add items.');
 			}
 		});
@@ -122,7 +122,7 @@
 							"<tr> <td>" + response.item_id + "</td>" +
 							"<td>" + response.item_name + "</td>" + 
 
-							"<td> <input type=\"number\"> </td>" +
+							"<td> <input type=\"number\" item-id=\"" + response.item_id + "\"> </td>" +
 							
 							//Sets the delete button to have an ID that has the Item ID of that row appended.
 							"<td> <button id=\"item-delete-" + response.item_id +"\" class=\"btn btn-danger btn-sm\"> Delete </button> </td> </tr>" ;

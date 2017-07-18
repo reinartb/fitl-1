@@ -42,7 +42,7 @@
 			<tr> 
 				<td> {{ $item->id }} </td> 
 				<td> {{ $item->name }} </td> 
-				<td> <input type="number" value="{{ $item->pivot->quantity_requested }}"> </td>
+				<td> <input type="number" item-id="{{ $item->id }}" value="{{ $item->pivot->quantity_requested }}"> </td>
 				<td> <button id="item-delete-{{ $item->id}}" class="btn btn-danger btn-sm"> Delete</button></td> 
 			</tr>
 		@endforeach

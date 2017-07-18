@@ -7,12 +7,12 @@
 
 	<div class="page-header">
 		<a href="{{ action('RequestController@edit', $request->id) }}" class="btn btn-warning pull-right">Edit Request</a>
-		<h1>Requisition and Issuance Slip Number: {{ $request->ris_number }}</h1>
+		<h2>Requisition and Issuance Slip Number: {{ $request->ris_number }}</h2>
 	</div>
 
 	<div class="row">
 		<div class="col-md-4">
-		<h2>Request Details</h2>
+		<h3>Request Details</h3>
 			<!-- <table class="table">
 				<thead>
 					<th>Header</th>
@@ -64,7 +64,7 @@
 		</div>
 
 		<div class="col-md-8">
-			<h2>Items Requested</h2>
+			<h3>Items Requested</h3>
 			<table class="table clickable-row">
 				<thead>
 					<th>Item Name</th>
