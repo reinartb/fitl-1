@@ -35,6 +35,10 @@
 		<th>Item ID</th>
 		<th>Item Name</th>
 		<th>Quantity Requested </th>
+		<th>SEPP Q1</th>
+		<th>SEPP Q2</th>
+		<th>SEPP Q3</th>
+		<th>SEPP Q4</th>
 		<th>Options</th>
 	</thead>
 	<tbody id="search-results-table">
@@ -43,6 +47,10 @@
 				<td> {{ $item->id }} </td> 
 				<td> {{ $item->name }} </td> 
 				<td> <input type="number" item-id="{{ $item->id }}" value="{{ $item->pivot->quantity_requested }}"> </td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 				<td> <button id="item-delete-{{ $item->id}}" class="btn btn-danger btn-sm"> Delete</button></td> 
 			</tr>
 		@endforeach

@@ -15,4 +15,8 @@ class Item extends Model
     public function requests() {
     	return $this->belongsToMany('App\Request', 'items_requests')->withPivot('quantity_requested');
     }
+
+    public function sepp() {
+    	return $this->hasMany('App\SEPP');
+    }
 }

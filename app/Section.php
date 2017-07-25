@@ -15,4 +15,8 @@ class Section extends Model
     	return $this->hasMany('App\Request');
     }
 
+    public function sepp() {
+    	return $this->hasMany('App\SEPP');
+    }
+
 }

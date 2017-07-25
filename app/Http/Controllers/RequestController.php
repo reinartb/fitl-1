@@ -124,6 +124,7 @@ class RequestController extends Controller
 
         // exit;
 
+
         return view('requests.show', [
             'request' =>  RequestObject::findOrFail($id),
             'items' => Item::all()

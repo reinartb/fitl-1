@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Request as RequestObject;
 use App\Item;
+use App\SEPP;
 
 class ItemController extends Controller
 {
@@ -66,7 +67,36 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        return view('items.show', ['item' => Item::findOrFail($id)]);
+
+        $item = Item::findOrFail($id);
+        $sections = $item->sepp->groupBy('section_id');
+
+        // $sectionss = SEPP::where('item_id', $id)->with(['section' => function($query){
+        //     $query->groupBy('section_id');
+        // }])->get();
+
+        // $sepp = $item->sepp;
+
+        // $i = 0;
+
+        // foreach ($sepp as $s) {
+        //     $i = $i + 1;    
+
+        // }
+
+        // $sections = $item->sepp->pluck('section_id');
+
+        // $item->whereHas('sepp', function ($query) {
+        //     $query->where('quarter', 'like' )
+        // })
+
+
+
+        return view('items.show', [
+            'item' => Item::findOrFail($id),
+            'items' => $item,
+            'sections' => $sections
+        ]);
     }
 
     /**
