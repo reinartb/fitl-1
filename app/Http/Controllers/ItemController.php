@@ -69,7 +69,8 @@ class ItemController extends Controller
     {
 
         $item = Item::findOrFail($id);
-        $sections = $item->sepp->groupBy('section_id');
+
+        // $sections = $item->sepp->groupBy('section_id');
 
         // $sectionss = SEPP::where('item_id', $id)->with(['section' => function($query){
         //     $query->groupBy('section_id');
@@ -93,9 +94,7 @@ class ItemController extends Controller
 
 
         return view('items.show', [
-            'item' => Item::findOrFail($id),
-            'items' => $item,
-            'sections' => $sections
+            'item' => Item::findOrFail($id)
         ]);
     }
 

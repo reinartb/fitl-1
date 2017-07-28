@@ -8,9 +8,12 @@
 
 		$('#search-results-table tr input').each( function () {
 			// Gets item ID from the input field and pushes it into an array of all Item IDs.
-				
+			
+
 	        var item_id = $(this).attr('item-id');
 	        
+	        console.log(item_id);
+
 	        array_item_id.push(item_id);
 
 			// Checks if quantity requested field has a value or not.
@@ -63,8 +66,6 @@
 		var invalid = false;
 		var selected_item = $('#item_list').select2('data');
 
-		console.log(selected_item);
-
 
 		if (selected_item.length == 0) {
 			alert('Please pick an item first.');
@@ -82,13 +83,11 @@
 		// 	return false;
 		// }
 
-
-
 	   	$.ajax({
 	       	type: 'POST',
 	       	url: '{{ url("additem") }}',
 	       	dataType: 'json',
-	       	data: {item_id: selected_item[0].id},
+	       	data: {item_id: selected_item[0].id, section_id: selected_section[0].id},
 	       	headers: {
 		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		    },
@@ -102,13 +101,23 @@
 						"<tr> <td>" + response.item_id + "</td>" +
 						"<td>" + response.item_name + "</td>" + 
 
-						"<td> <input type=\"number\"> </td>" +
+						"<td> <input type=\"number\" item-id=\"" + response.item_id + "\" class=\"form-control input-smF\"" + response.item_id + "\"> </td>";
 
-						"<td> 10 </td>" +
-						"<td> 10 </td>" +
-						"<td> 10 </td>" +
-						"<td> 10 </td>" +
+					if (response.sepp == 'yes') {
+						newRowContent = 
+							newRowContent +
+							"<td> " + response.sepp_q1 + " </td>" +
+							"<td> " + response.sepp_q2 + " </td>" +
+							"<td> " + response.sepp_q3 + " </td>" +
+							"<td> " + response.sepp_q4 + " </td>";				
+					} else {
+						newRowContent = 
+							newRowContent +
+							"<td colspan=4 class=\"text-center\"> <button item_id=" + response.item_id + "class=\"btn btn-warning btn-sm\"> Add SEPP </button> </td>" ;
+					}
 						
+
+					newRowContent = newRowContent +	
 						//Sets the delete button to have an ID that has the Item ID of that row appended.
 						"<td> <button id=\"item-delete-" + response.item_id +"\" class=\"btn btn-danger btn-sm\"> Delete </button> </td> </tr>" ;
 

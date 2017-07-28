@@ -1,10 +1,10 @@
-<?php
+p<?php
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSeppTable extends Migration
+class CreateNewSeppTable extends Migration
 {
     /**
      * Run the migrations.
@@ -27,9 +27,13 @@ class CreateSeppTable extends Migration
                 ->references('id')->on('sections')
                 ->onDelete('cascade');
 
-            $table->tinyInteger('quarter');
             $table->smallInteger('year');
-            $table->integer('sepp_quantity');
+
+            $table->integer('q1_quantity');
+            $table->integer('q2_quantity');
+            $table->integer('q3_quantity');
+            $table->integer('q4_quantity');
+
             $table->timestamps();
         });        
     }

@@ -19,4 +19,5 @@ class Item extends Model
     public function sepp() {
     	return $this->hasMany('App\SEPP');
     }
+
 }

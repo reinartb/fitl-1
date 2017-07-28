@@ -46,11 +46,13 @@
 			<tr> 
 				<td> {{ $item->id }} </td> 
 				<td> {{ $item->name }} </td> 
-				<td> <input type="number" item-id="{{ $item->id }}" value="{{ $item->pivot->quantity_requested }}"> </td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td> <input type="number" item-id="{{ $item->id }}" class="form-control input-sm" value="{{ $item->pivot->quantity_requested }}"> </td>
+
+					<td> </td>
+					<td> </td>
+					<td> </td>
+					<td> </td>
+
 				<td> <button id="item-delete-{{ $item->id}}" class="btn btn-danger btn-sm"> Delete</button></td> 
 			</tr>
 		@endforeach

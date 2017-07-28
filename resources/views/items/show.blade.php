@@ -15,33 +15,37 @@
 			</div>
 		</div>
 
-		<pre>
-		{{$item->sepp->first()->section->short_name}}
+		<hr>
 
+		<div class="row">
+			<div class="text-center">
+				<h4>SEPP for Different Departments</h4>
+			</div>
 
-		{{-- dd($sections) --}}
-
-		</pre>
-
-		<table class="table">
-			<thead>
-				<th>Section</th>
-				<th>Q1</th>
-				<th>Q2</th>
-				<th>Q3</th>
-				<th>Q4</th>
-			</thead>
-			<tbody>
-				@foreach ($sections as $s_id => $sepp)
-					<tr>
-						<td>{{ $sepp->first()->section->short_name }}</td>
-						@foreach ($sepp as $s)
-							<td>{{ $s->sepp_quantity }}</td>
+			<div class="col-md-6 col-md-offset-3">
+				<table class="table table-bordered">
+					<thead>
+						<th>Section</th>
+						<th>Year</th>
+						<th>Q1</th>
+						<th>Q2</th>
+						<th>Q3</th>
+						<th>Q4</th>
+					</thead>
+					<tbody>
+						@foreach($item->sepp as $sepp) 
+							<tr>
+								<td>{{ $sepp->section->short_name }}</td>
+								<td>{{ $sepp->year }} </td>
+								<td>{{ $sepp->q1_quantity }}</td>
+								<td>{{ $sepp->q2_quantity }}</td>
+								<td>{{ $sepp->q3_quantity }}</td>
+								<td>{{ $sepp->q4_quantity }}</td>
+							</tr>
 						@endforeach
-					</tr>
-				@endforeach
-			</tbody>
+					</tbody>
+				</table>
 
-
-		</table>
+			</div>
+		</div>
 @endsection
