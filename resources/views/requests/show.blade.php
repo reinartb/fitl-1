@@ -69,12 +69,20 @@
 				<thead>
 					<th>Item Name</th>
 					<th>Quantity Requested</th>
+					<th>SEPP Q1</th>
+					<th>SEPP Q2</th>
+					<th>SEPP Q3</th>
+					<th>SEPP Q4</th>
 				</thead>
 				<tbody>
 				@foreach ($request->items as $item)
 					<tr>
 						<td><a href="{{ route('items.show', $item->id) }}">{{ $item->name }}</a></td>
-						<td>{{ $item->pivot->quantity_requested }}</td>
+						<td> {{ $item->pivot->quantity_requested }}</td>
+						<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q1_quantity }} </td>
+						<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q2_quantity }} </td>
+						<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q3_quantity }} </td>
+						<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q4_quantity }} </td>
 					</tr>
 				@endforeach
 				</tbody>

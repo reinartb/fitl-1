@@ -18,11 +18,12 @@
 		<hr>
 
 		<div class="row">
-			<div class="text-center">
-				<h4>SEPP for Different Departments</h4>
-			</div>
+			<div class="col-md-6">
 
-			<div class="col-md-6 col-md-offset-3">
+				<div class="text-center">
+					<h4>SEPP for Different Departments</h4>
+				</div>
+
 				<table class="table table-bordered">
 					<thead>
 						<th>Section</th>
@@ -47,5 +48,31 @@
 				</table>
 
 			</div>
+
+			<div class="col-md-6">
+				<div class="text-center">
+					<h4>Quantity Requested</h4>
+				</div>
+				<table class="table table-bordered">
+					<thead>
+						<th>RIS Number</th>
+						<th>Section</th>
+						<th>Quantity Requested</th>
+						<th>Date and Time Requested</th>
+					</thead>
+					<tbody>
+						@foreach($item->requests as $r) 
+							<tr>
+								<td><a href="{{ action('RequestController@show', $r->id) }}">{{ $r->ris_number }}</a></td>
+								<td>{{ $r->section->short_name }}</td>
+								<td>{{ $r->pivot->quantity_requested }}</td>
+								<td>{{ Carbon\Carbon::parse($r->created_at)->format('F d, Y h:i:s A') }}</td>
+							</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+
+
 		</div>
 @endsection

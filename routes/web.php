@@ -44,7 +44,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 Route::resource('sections', 'SectionController');
-
 Route::get('section/select2-search', 'SectionController@find');
+
+
+Route::resource('sepp', 'SEPPController');
+Route::post('modal_store','SEPPController@modal_store');

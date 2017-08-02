@@ -7,9 +7,14 @@ use Esensi\Model\Model;
 class SEPP extends Model
 {
 	protected $rules = [
-    	'quarter'					=> ['required'],
-    	'year'						=> ['required'],
-    	'sepp_quantity'				=> ['required']
+    	'q1_quantity'				=> ['required'],
+    	'q2_quantity'               => ['required'],
+        'q3_quantity'               => ['required'],
+        'q4_quantity'               => ['required'],
+        'year'						=> ['required'],
+        'item_id'                   => ['required'],
+        'section_id'                => ['required']
+
     ];
 
 	public $table = "sepp";

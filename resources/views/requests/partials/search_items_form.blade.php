@@ -23,7 +23,6 @@
 		<!-- </div> -->
 	</div>
 
-
 {!! Form::close() !!}
 
 
@@ -48,10 +47,10 @@
 				<td> {{ $item->name }} </td> 
 				<td> <input type="number" item-id="{{ $item->id }}" class="form-control input-sm" value="{{ $item->pivot->quantity_requested }}"> </td>
 
-					<td> </td>
-					<td> </td>
-					<td> </td>
-					<td> </td>
+				<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q1_quantity }} </td>
+				<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q2_quantity }} </td>
+				<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q3_quantity }} </td>
+				<td> {{ $item->sepp()->where('section_id', $request->section->id)->first()->q4_quantity }} </td>
 
 				<td> <button id="item-delete-{{ $item->id}}" class="btn btn-danger btn-sm"> Delete</button></td> 
 			</tr>

@@ -281,6 +281,25 @@ class RequestController extends Controller
 
     public function addToCart(Request $request) {
 
+        // Search for the item object of the item requested.
+        $item_requested = Item::findOrFail($request->item_id);
+
+        // Get SEPP values of item w/ selected section.
+        $sepp = $item_requested->sepp()->where('section_id', $request->section_id)->first();
+
+        // Check if SEPP has values or not.
+        if ( is_null($sepp) ) {
+            $response = [
+                'status' => 'success',
+                'sepp' => 'no',
+                'item_id' => $item_requested->id,
+                'item_name' => $item_requested->name
+            ];
+
+            return response()->json($response);
+        }
+
+        // Gets all item ids of items already in cart.
         $cart = ItemCart::all()->pluck('item_id');
 
         // Checks if item to be added into cart is already inside the cart.
@@ -294,15 +313,7 @@ class RequestController extends Controller
                 return response()->json($response);
             }
         }
-
-
-        // Search for the item object of the item requested.
-        $item_requested = Item::findOrFail($request->item_id);
-
-        // Get SEPP values of item w/ selected section.
-        $sepp = $item_requested->sepp()->where('section_id', $request->section_id)->first();
         
-
         // Create new item object in the temporary cart.
         $item_cart = new ItemCart;
 
@@ -325,30 +336,17 @@ class RequestController extends Controller
         // Object successfully created.
         $message = 'Item named '. $item_requested->name . ' with ID ' . $item_requested->id . ' was added to the request.';
 
-        
-        if ( is_null($sepp) ) {
-            $response = [
-                'status' => 'success',
-                'sepp' => 'no',
-                'msg' => $message,
-                'item_id' => $item_requested->id,
-                'item_name' => $item_requested->name
-            ];
-
-        } else {
-            $response = [
-                'status' => 'success',
-                'sepp' => 'yes',
-                'msg' => $message,
-                'item_id' => $item_requested->id,
-                'item_name' => $item_requested->name,
-                'sepp_q1' => $sepp->q1_quantity,
-                'sepp_q2' => $sepp->q2_quantity,
-                'sepp_q3' => $sepp->q3_quantity,
-                'sepp_q4' => $sepp->q4_quantity
-            ];  
-
-        }
+        $response = [
+            'status' => 'success',
+            'sepp' => 'yes',
+            'msg' => $message,
+            'item_id' => $item_requested->id,
+            'item_name' => $item_requested->name,
+            'sepp_q1' => $sepp->q1_quantity,
+            'sepp_q2' => $sepp->q2_quantity,
+            'sepp_q3' => $sepp->q3_quantity,
+            'sepp_q4' => $sepp->q4_quantity
+        ];  
 
         // Pass the response as a JSON object.
         return response()->json($response);
