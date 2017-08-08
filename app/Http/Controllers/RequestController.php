@@ -307,7 +307,7 @@ class RequestController extends Controller
             if ($c == $request->item_id) {
                 $response = [
                     'status' => 'fail',
-                    'msg' => 'Item already exists inside cart.'
+                    'msg' => 'Item already exists inside request.'
                 ];
 
                 return response()->json($response);

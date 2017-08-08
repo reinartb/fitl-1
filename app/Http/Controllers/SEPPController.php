@@ -156,19 +156,16 @@ class SEPPController extends Controller
 
         if ( ! $sepp->save() ) {
 
-            // foreach ( $sepp->getErrors()->all() as $error) {
-            //     $message = $message . ' ' . $error;
-            // }
-
             return response()
                 ->json([
                     'status' => 'success',
+                    'real_status'=> 'failed',
                     'msg' => $sepp->getErrors()
                     ]);
         }
 
         // Object saves successfully.
-        $message = 'New SEPP data for Item ID ' . $request->item_id . ' and Section ID ' . $request->section . ' for the Year ' . $request->year . ' was submitted successfully!';
+        $message = 'New SEPP data for Item ID ' . $request->item_id . ' and Section ID ' . $request->section_id . ' for the year ' . $request->year . ' was submitted successfully!';
 
         $response = [
             'status' => 'success',

@@ -24,40 +24,28 @@
 		
 		@include('requests.partials.object_form')
 
-		<button id="updaterequest" type="submit" class="btn btn-success">Update The Request</button>
-		{!! Form::close() !!}
-
-		@include('requests.partials.delete_object')
 	</div>
 
 	<div class="col-md-8">
 		@include('requests.partials.search_items_form')
 	</div>
+
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-	<div class="modal-dialog">
+<hr>
 
-	<!-- Modal content-->
-		<div class="modal-content">
-		    <div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			    <h4 class="modal-title">Add New SEPP</h4>
-			</div>
-		    <div class="modal-body" style="overflow: hidden;">
-		    	@include('sepp.partials.object_form')
+<div class="text-center">
+	<button id="updaterequest" type="submit" class="btn btn-success btn-lg">Update The Request</button>
+	&nbsp
+	&nbsp
+	&nbsp
+	&nbsp
+	{!! Form::close() !!}
 
-		    </div>
-		    <div class="modal-footer">
-		    	<button type="button" id="add-sepp" class="btn btn-success">Add SEPP</button>
-		    	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    </div>
-
-		</div>
-  
-	</div>
+	@include('requests.partials.delete_object')
 </div>
+
+@include('requests.partials.modal')
 
 @endsection
 

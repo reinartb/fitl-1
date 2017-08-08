@@ -43,9 +43,9 @@
 				<div class="list-group-item">
 					<h4>Requested By Section:</h4>
 					<p>
-						{{ $request->section->short_name }}
+						<a href="{{ route('sections.show', $request->section->id) }}">{{ $request->section->short_name }}
 						<br>
-						{{ $request->section->long_name }}
+						{{ $request->section->long_name }}</a>
 					</p>
 				</div>
 				<div class="list-group-item">

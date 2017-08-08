@@ -39,6 +39,7 @@ Route::post('submitrequest', 'RequestController@submitRequest');
 
 
 Route::resource('items', 'ItemController');
+Route::post('items/modal_store','ItemController@modal_store');
 
 Auth::routes();
 
@@ -49,4 +50,4 @@ Route::get('section/select2-search', 'SectionController@find');
 
 
 Route::resource('sepp', 'SEPPController');
-Route::post('modal_store','SEPPController@modal_store');
+Route::post('sepp/modal_store','SEPPController@modal_store');

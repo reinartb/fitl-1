@@ -12,7 +12,7 @@ class Section extends Model
     ];
 
     public function requests () {
-    	return $this->hasMany('App\Request');
+    	return $this->hasMany('App\Request', 'requested_by_section');
     }
 
     public function sepp() {

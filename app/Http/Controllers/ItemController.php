@@ -70,29 +70,6 @@ class ItemController extends Controller
 
         $item = Item::findOrFail($id);
 
-        // $sections = $item->sepp->groupBy('section_id');
-
-        // $sectionss = SEPP::where('item_id', $id)->with(['section' => function($query){
-        //     $query->groupBy('section_id');
-        // }])->get();
-
-        // $sepp = $item->sepp;
-
-        // $i = 0;
-
-        // foreach ($sepp as $s) {
-        //     $i = $i + 1;    
-
-        // }
-
-        // $sections = $item->sepp->pluck('section_id');
-
-        // $item->whereHas('sepp', function ($query) {
-        //     $query->where('quarter', 'like' )
-        // })
-
-
-
         return view('items.show', [
             'item' => Item::findOrFail($id)
         ]);
@@ -147,8 +124,8 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
+
         $item = Item::findOrFail($id);
 
         $message = 'The item "' . $item->name . '" has been deleted successfully.';
@@ -159,6 +136,37 @@ class ItemController extends Controller
             ->route('items.index')
             ->with('message', $message);
 
+
+    }
+
+    public function modal_store(Request $request) {
+
+        $item = new Item;
+
+        $item->name         =      $request->name;
+
+
+        if ( ! $item->save() ) {
+
+            return response()
+                ->json([
+                    'status' => 'success',
+                    'real_status' => 'failed',
+                    'msg' => $item->getErrors()
+                    ]);
+        }
+
+        // Object saves successfully.
+        $message = 'New item "' . $item->name . '" has successfully been created.';
+
+        $response = [
+            'status' => 'success',
+            'real_status' => 'success',
+            'item_id' => $item->id,
+            'msg' => $message
+        ];  
+
+        return response()->json($response);
 
     }
 }

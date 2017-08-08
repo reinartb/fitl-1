@@ -67,7 +67,10 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        //
+
+        return view('sections.show', [
+            'section' => Section::findOrFail($id)
+        ]);
     }
 
     /**

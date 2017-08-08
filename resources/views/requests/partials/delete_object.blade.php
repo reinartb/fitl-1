@@ -5,6 +5,6 @@
 	'style' => 'display: inline;'
 ]) !!}
 
-<button type="submit" class="btn btn-danger">Delete this Request</button>
+<button type="submit" class="btn btn-danger btn-lg">Delete this Request</button>
 
 {!! Form::close() !!}

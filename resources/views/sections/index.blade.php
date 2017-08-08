@@ -40,6 +40,8 @@
 			</div>
 
 			<div class="col-md-4">
+
+				<a href="{{ route('sections.show', $section->id) }}" class="btn btn-primary btn-sm">Show</a>
 				<a href="{{ route('sections.edit', $section->id) }}" class="btn btn-warning btn-sm">Edit</a>
 				{!! Form::open([
 					'route' => ['sections.destroy', $section->id],
