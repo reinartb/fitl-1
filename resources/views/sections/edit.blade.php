@@ -22,5 +22,15 @@
 
 {!! Form::close() !!}
 
+{!! Form::open([
+	'route' => ['sections.destroy', $section->id],
+	'method' => 'delete',
+	'class' => 'delete-object',
+	'style' => 'display: inline;'
+]) !!}
+
+	<button type="submit" class="btn btn-danger">Delete</button>
+
+{!! Form::close() !!}
 
 @endsection

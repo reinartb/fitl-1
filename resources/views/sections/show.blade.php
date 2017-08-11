@@ -6,30 +6,42 @@
 
 <div class="page-header">
 	<a href="{{ route('sections.edit', $section->id) }}" class="btn btn-warning pull-right">Edit Section</a>
-	<h1>{{ $section->short_name }}</h1>
+	<h1>{{ $section->long_name }}</h1>
 </div>
 
-<div class="list-group">
-	<div class="list-group-item">
-		<h4>Short Name:</h4>
-		<p>{{ $section->short_name }}</p>
+
+<div class="row">
+	<div class="col-md-3">
+		<h3><strong>Section Details</strong></h3>
+		<p></p>
 	</div>
-	<div class="list-group-item">
-		<h4>Long Name:</h4>
-		<p>{{ $section->long_name }}</p>
-	</div>
-	<div class="list-group-item">
-		<h4>Created At:</h4>
-		<p>{{ Carbon\Carbon::parse($section->created_at)->format('F d, Y h:i:s A') }}</p>
+	<div class="col-md-9">
+		<table class="table table-bordered">
+			<thead>
+				<th>Code</th>
+				<th>Name</th>
+				<th>Created At</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ $section->short_name }}</td>
+					<td>{{ $section->long_name }}</td>
+					<td>{{ Carbon\Carbon::parse($section->created_at)->format('F d, Y') }}</td>
+				</tr>
+			</tbody>
+
+		</table>
 	</div>
 </div>
 
 <hr>
 
 <div class="row">
-	<div class="col-md-8">
-		<h4>SEPP for Section's Items</h4>
-		<br>
+	<div class="col-md-3">
+		<h3><strong>SEPP Log</strong></h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rutrum mauris nibh, eget consequat diam mollis porta. Quisque accumsan hendrerit sapien, suscipit gravida ligula lobortis feugiat. Quisque enim augue, consequat sed ipsum id, molestie fringilla neque. Donec ac diam malesuada, venenatis dui nec, placerat ipsum.</p>
+	</div>
+	<div class="col-md-9">
 		<table class="table table-bordered">
 			<thead>
 				<th>Item</th>
@@ -40,53 +52,79 @@
 				<th>Q4</th>
 			</thead>
 			<tbody>
-				@foreach($section->sepp as $sepp)
+				@foreach($sepp as $s)
 					<tr>
-						<td><a href="{{ route('items.show', $sepp->item->id) }}">{{ $sepp->item->name }}</a></td>
-						<td>{{ $sepp->year }} </td>
-						<td>{{ $sepp->q1_quantity }}</td>
-						<td>{{ $sepp->q2_quantity }}</td>
-						<td>{{ $sepp->q3_quantity }}</td>
-						<td>{{ $sepp->q4_quantity }}</td>
+						<td><a href="{{ route('items.show', $s->item->id) }}">{{ $s->item->name }}</a></td>
+						<td>{{ $s->year }} </td>
+						<td>{{ $s->q1_quantity }}</td>
+						<td>{{ $s->q2_quantity }}</td>
+						<td>{{ $s->q3_quantity }}</td>
+						<td>{{ $s->q4_quantity }}</td>
 					</tr>
 				@endforeach
 			</tbody>
 		</table>
 	</div>
 </div>
-
 <hr>
+<div class="row">
+	<div class="col-md-3">
+		<h3><strong>Request Log</strong></h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rutrum mauris nibh, eget consequat diam mollis porta. Quisque accumsan hendrerit sapien, suscipit gravida ligula lobortis feugiat. Quisque enim augue, consequat sed ipsum id, molestie fringilla neque. Donec ac diam malesuada, venenatis dui nec, placerat ipsum.</p>
+	</div>
+	<div class="col-md-9">
+		<div class="row">
+			<div class="col-md-4">
 
-<h4>Request Log</h4>
+			<?php $count = 1;?>
 
-<br>
+			@foreach ($requests as $r)
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="text-center">RIS Number: <a href="{{ action('RequestController@show', $r->id) }}">{{ $r->ris_number }}</a></div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-6 text-center">
+								<strong>Requested By:</strong> 
+								<br>{{ $r->requested_by_user }}
+							</div>
+							<div class="col-md-6 text-center">
+								<strong>Requested At:</strong> 
+								<br>{{ Carbon\Carbon::parse($r->created_at)->format('F d, Y') }}
+							</div>
+						</div>
+					</div>
+							
+					<table class="table table-bordered">						
+						<thead>
+							<th>Item</th>
+							<th>Quantity Requested</th>
+						</thead>
+						<tbody>
+							@foreach($r->items as $i) 
+								<tr>
+									<td><a href="{{ route('items.show', $i->id) }}">{{ $i->name }}</a></td>
+									<td>{{ $i->pivot->quantity_requested }}</td>
+								</tr>
+							@endforeach
+						</tbody>
+					</table>
+				</div>
 
-<div class="list-group">
-	@foreach($section->requests as $r)
-		<div class="list-group-item">
-			<p>RIS Number: <a href="{{ action('RequestController@show', $r->id) }}">{{ $r->ris_number }}</a></p>
-			<p>Requested By: {{ $r->requested_by_user }}</p>
-			<p>Requested At: {{ Carbon\Carbon::parse($r->created_at)->format('F d, Y h:i:s A') }}</p>
+				<?php if($count %ceil($section->requests()->count() ) != 0 ): ?>
 
-			<table class="table table-bordered" style="width: 50%">						
-				<thead>
-					<th>Item</th>
-					<th>Quantity Requested</th>
-				</thead>
-				<tbody>
-					@foreach($r->items as $i) 
-						<tr>
-							<td><a href="{{ route('items.show', $i->id) }}">{{ $i->name }}</a></td>
-							<td>{{ $i->pivot->quantity_requested }}</td>
-						</tr>
-					@endforeach
-				</tbody>
-			</table>
+		                </div>
+
+		                <div class="col-sm-4">
+
+		        <?php endif; $count++;?>
+
+			@endforeach
+			</div>
 		</div>
-	@endforeach
+	{{ $requests->links() }}
+	</div>
 </div>
-<!-- </div> -->
 
-
-</div>
 @endsection

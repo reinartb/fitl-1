@@ -8,20 +8,37 @@
 	<h1>{{ $item->name }}</h1>
 </div>
 
-<div class="list-group">
-	<div class="list-group-item">
-		<h4>Created At:</h4>
-		<p>{{ Carbon\Carbon::parse($item->created_at)->format('F d, Y h:i:s A') }}</p>
+
+<div class="row">
+	<div class="col-md-3">
+		<h3><strong>Item Details</strong></h3>
+		<p></p>
+	</div>
+	<div class="col-md-9">
+		<table class="table table-bordered">
+			<thead>
+				<th>Name</th>
+				<th>Created At</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ $item->name }}</td>
+					<td>{{ Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
+				</tr>
+			</tbody>
+
+		</table>
 	</div>
 </div>
 
 <hr>
 
 <div class="row">
-	<div class="col-md-8">
-
-		<h4>SEPP for Different Departments</h4>
-		<br>
+	<div class="col-md-3">
+		<h3><strong>SEPP Log</strong></h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rutrum mauris nibh, eget consequat diam mollis porta. Quisque accumsan hendrerit sapien, suscipit gravida ligula lobortis feugiat.</p>
+	</div>
+	<div class="col-md-9">
 
 		<table class="table table-bordered">
 			<thead>
@@ -35,7 +52,7 @@
 			<tbody>
 				@foreach($item->sepp as $sepp) 
 					<tr>
-						<td>{{ $sepp->section->short_name }}</td>
+						<td><a href="{{ route('sections.show', $sepp->section->id) }}">{{ $sepp->section->short_name }}</a></td>
 						<td>{{ $sepp->year }} </td>
 						<td>{{ $sepp->q1_quantity }}</td>
 						<td>{{ $sepp->q2_quantity }}</td>
@@ -45,15 +62,19 @@
 				@endforeach
 			</tbody>
 		</table>
+
 	</div>
 </div>
 
 <hr>
 
-<!-- <div class="col-md-6"> -->
-	<h4>Request Log</h4>
-	<br>
-	<table class="table table-bordered">
+<div class="row">
+	<div class="col-md-3">
+		<h3><strong>Request Log</strong></h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rutrum mauris nibh, eget consequat diam mollis porta.</p>
+	</div>
+	<div class="col-md-9">
+		<table class="table table-bordered">
 		<thead>
 			<th>Date and Time Requested</th>
 			<th>RIS Number</th>
@@ -73,7 +94,9 @@
 			@endforeach
 		</tbody>
 	</table>
-<!-- </div> -->
+	</div>
+</div>
+
 
 
 @endsection

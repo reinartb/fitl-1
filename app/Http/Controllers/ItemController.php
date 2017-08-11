@@ -17,7 +17,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view('items.index', ['items' => Item::orderby('created_at', 'asc')->get()] );
+        return view('items.index', ['items' => Item::orderby('created_at', 'asc')->paginate(10)] );
     }
 
     /**

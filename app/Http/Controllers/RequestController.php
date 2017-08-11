@@ -18,7 +18,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        return view('requests.index', ['requests' =>  RequestObject::all()]);   
+        return view('requests.index', ['requests' =>  RequestObject::paginate(10)]);   
     }
 
     /**

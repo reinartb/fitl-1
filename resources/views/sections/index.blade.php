@@ -5,9 +5,38 @@
 @section('content')
 
 <div class="page-header">
+	<a href="{{ route('sections.create') }}" class="btn btn-success pull-right">+ Create New Section</a>
+
 	<h1>Sections</h1>
 </div>
 
+
+<!-- <div class="row"> -->
+	<table class="table">
+		<thead>
+			<th>Section Code</th>
+			<th>Section Name</th>
+			<th>Options</th>
+		</thead>
+		<tbody>
+			@foreach ($sections as $section)
+				<tr>
+					<td>{{ $section->short_name }}</td>
+					<td>{{ $section->long_name }}</td>
+					<td><a href="{{ route('sections.show', $section->id) }}" >Show</a>
+					&nbsp
+					<a href="{{ route('sections.edit', $section->id) }}">Edit</a></td>
+				</tr>
+			@endforeach
+		</tbody>
+	</table>
+	
+	<div class="text-center">
+		{{ $sections->links() }}
+	</div>
+<!-- </div> -->
+
+<!-- 
 <div class="list-group">
 
 	<div class="list-group-item">
@@ -21,9 +50,6 @@
 			</div>
 
 			<div class="col-md-4">
-
-
-
 			</div>
 		</div>
 	</div>
@@ -43,21 +69,11 @@
 
 				<a href="{{ route('sections.show', $section->id) }}" class="btn btn-primary btn-sm">Show</a>
 				<a href="{{ route('sections.edit', $section->id) }}" class="btn btn-warning btn-sm">Edit</a>
-				{!! Form::open([
-					'route' => ['sections.destroy', $section->id],
-					'method' => 'delete',
-					'class' => 'delete-object',
-					'style' => 'display: inline;'
-				]) !!}
-
-				<button type="submit" class="btn btn-danger btn-sm">Delete</button>
-
-				{!! Form::close() !!}
 
 			</div>
 		</div>
 	</div>
-@endforeach
+@endforeach -->
 
 
 </div>

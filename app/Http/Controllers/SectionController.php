@@ -16,7 +16,7 @@ class SectionController extends Controller
     public function index()
     {
         
-        return view ('sections.index', ['sections' => Section::all()]);
+        return view ('sections.index', ['sections' => Section::paginate(10)]);
 
     }
 
@@ -68,8 +68,15 @@ class SectionController extends Controller
     public function show($id)
     {
 
+        $section = Section::findOrFail($id);
+        $sepp = $section->sepp()->get();
+        $requests = $section->requests()->paginate(9);
+
+
         return view('sections.show', [
-            'section' => Section::findOrFail($id)
+            'section' => $section,
+            'sepp' => $sepp,
+            'requests' => $requests
         ]);
     }
 
