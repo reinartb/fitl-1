@@ -73,10 +73,11 @@ class SectionController extends Controller
         $requests = $section->requests()->paginate(9);
 
 
+
         return view('sections.show', [
             'section' => $section,
             'sepp' => $sepp,
-            'requests' => $requests
+            'requests' => $requests 
         ]);
     }
 

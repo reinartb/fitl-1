@@ -112,7 +112,7 @@
 					</table>
 				</div>
 
-				<?php if($count %ceil($section->requests()->count() ) != 0 ): ?>
+				<?php if($count %ceil($section->requests()->count() /3 ) == 0 ): ?>
 
 		                </div>
 
@@ -126,5 +126,6 @@
 	{{ $requests->links() }}
 	</div>
 </div>
+
 
 @endsection
