@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Illuminate\Http\Request;
 use App\Section;
 
@@ -69,15 +70,36 @@ class SectionController extends Controller
     {
 
         $section = Section::findOrFail($id);
-        $sepp = $section->sepp()->get();
+        // $sepp = $section->sepp()->orderBy('item_id','desc')->get();
         $requests = $section->requests()->paginate(9);
 
+
+
+        $items = DB::table('items_requests')
+            ->join('items', 'items.id', '=', 'items_requests.item_id')
+            ->join('requests', 'requests.id', '=', 'items_requests.request_id')
+            ->join('sections', 'sections.id', '=', 'requests.requested_by_section')
+            ->select('requests.ris_number','requests.created_at' ,'items.name as item_name', 'sections.short_name', 'items_requests.quantity_requested','requests.id as request_id','items.id as item_id')
+            ->where('sections.id',$id)
+            ->get();
+
+        $sepp = DB::table('items_requests')
+            ->join('items', 'items.id', '=', 'items_requests.item_id')
+            ->join('requests', 'requests.id', '=', 'items_requests.request_id')
+            ->join('sections', 'sections.id', '=', 'requests.requested_by_section')
+            ->leftJoin('sepp', 'sepp.item_id', '=', 'items.id')
+            ->select(DB::raw('items.name as item_name,SUM(items_requests.quantity_requested) AS quantity_requested, items.id as item_id, sepp.q1_quantity, sepp.q2_quantity, sepp.q3_quantity, sepp.q4_quantity, sepp.year'))
+            ->where('sections.id',$id)
+            ->groupBy('items_requests.item_id')
+            ->orderBy('items.id','desc')
+            ->get();
 
 
         return view('sections.show', [
             'section' => $section,
             'sepp' => $sepp,
-            'requests' => $requests 
+            'requests' => $requests,
+            'items' => $items
         ]);
     }
 

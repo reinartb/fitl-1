@@ -7,6 +7,56 @@
 <div class="container">
 
 	<div class="row">
+		<div class="col-md-6">
+			<select class="form-control" name="requested_by_section" id="section_list" style="width: 100%">
+			</select>
+		</div>
+		<div class="col-md-6">
+			<select class="form-control" name="item_id" id="item_list" style="width: 100%">
+			</select>
+		</div>
+
+		<div>
+
+	</div>
+	
+	<br>
+	<br>
+
+	<div class="row">
+		<div class="text-center">
+			<button id="searchsepp" class="btn btn-success">Search SEPP</button>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<table class="table clickable-row">
+			<thead>
+				<th>Item Name</th>
+				<th>SEPP Q1</th>
+				<th>SEPP Q2</th>
+				<th>SEPP Q3</th>
+				<th>SEPP Q4</th>
+				<th>Quantity Requested</th>
+			</thead>
+			<tbody id="search-results-table">
+
+			</tbody>
+		</table>
+
+
+	</div>
+
+
+
+
+	<br>
+	<hr>
+	<br>
+
+	<div class="row">
 
 		{{ Form::open([
 			'method'=>'post',
@@ -59,10 +109,16 @@
 
 </div>
 
+@include('requests.partials.modal')
+
 @endsection
 
 
+
+
 @section('scripts')
+
+@include('requests.partials.request_script')
 
 	<script>
 

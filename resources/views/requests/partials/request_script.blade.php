@@ -122,6 +122,9 @@
 		***************************/
 
 
+
+
+
 		$('#add-sepp').on('click', function(e) {
 			var selected_item = $('#item_list_sepp').select2('data');
 			var selected_section = $('#section_list_sepp').select2('data');
@@ -274,12 +277,7 @@
 								"<td> " + response.sepp_q2 + " </td>" +
 								"<td> " + response.sepp_q3 + " </td>" +
 								"<td> " + response.sepp_q4 + " </td>";				
-						} else {
-							newRowContent = 
-								newRowContent +
-								"<td colspan=4 class=\"text-center\"> <button item_id=" + response.item_id + "class=\"btn btn-warning btn-sm\"> Add SEPP </button> </td>" ;
-						}
-							
+						}							
 
 						newRowContent = newRowContent +	
 							//Sets the delete button to have an ID that has the Item ID of that row appended.
@@ -327,6 +325,76 @@
 
 	  	});
 	  	
+
+		$('#searchsepp').on('click', function(e) {
+			// Checks if an item is selected.
+			var selected_item = $('#item_list').select2('data');
+			if (selected_item.length == 0) {
+				alert('Please pick an item first.');
+				return false
+			}
+			
+			// Checks if a section is selected.
+			var selected_section = $('#section_list').select2('data');
+			if (selected_section.length == 0) {
+				alert ('Please pick a section first.');
+				return false;
+			}
+
+			$.ajax({
+		       	type: 'POST',
+		       	url: '{{ url("sepp/seppsearch") }}',
+		       	dataType: 'json',
+		       	data: {item_id: selected_item[0].id, section_id: selected_section[0].id},
+		       	headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    },
+		       	success: function( response ) {
+
+		       		// Checks if item has SEPP with department already inputted.
+		       		if (response.sepp == 'no') {
+		       			$("#seppModal").modal();
+
+		       			$("#year").val("");
+		       			$('#q1_quantity').val("");
+						$('#q2_quantity').val("");
+						$('#q3_quantity').val("");
+						$('#q4_quantity').val("");
+		       			
+		       			$("#item_list_sepp").find('option').remove().end().append('<option value=\"' + selected_item[0].id + '\">' + selected_item[0].text +'</option>');
+		       			$("#item_list_sepp").prop("disabled", true);
+		       			$("#section_list_sepp").find('option').remove().end().append('<option value=\"' + selected_section[0].id + '\">' + selected_section[0].text +'</option>');
+		       			$("#section_list_sepp").prop("disabled", true);
+
+		       			return false;
+		       		}
+
+		       		// Checks if SEPP values were found.
+		       		if (response.sepp == 'yes') {
+
+		           		// If successfully added to cart, a new row will be added inside the search results table.
+						var newRowContent = 
+							"<tr> <td>" + response.item_name + "</td>" +
+							"<td> " + response.sepp_q1 + " </td>" +
+							"<td> " + response.sepp_q2 + " </td>" +
+							"<td> " + response.sepp_q3 + " </td>" +
+							"<td> " + response.sepp_q4 + " </td> </tr>";
+
+						console.log(response.requests);				
+
+						$("#search-results-table").append(newRowContent);
+		       		}
+
+		   			// If not successful, return error message from Controller.
+		   			alert (response.msg);
+
+		   			// Check if section dropdown should be disabled.
+		   			freezeSection();	         
+		    	}
+		   	});
+
+
+		});
 
 
 		/********

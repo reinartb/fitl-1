@@ -50,22 +50,54 @@
 				<th>Q2</th>
 				<th>Q3</th>
 				<th>Q4</th>
+				<th>Total Quantity Requested</th>
 			</thead>
 			<tbody>
 				@foreach($sepp as $s)
 					<tr>
-						<td><a href="{{ route('items.show', $s->item->id) }}">{{ $s->item->name }}</a></td>
+						<td><a href="{{ route('items.show', $s->item_id) }}">{{ $s->item_name }}</a></td>
 						<td>{{ $s->year }} </td>
 						<td>{{ $s->q1_quantity }}</td>
 						<td>{{ $s->q2_quantity }}</td>
 						<td>{{ $s->q3_quantity }}</td>
 						<td>{{ $s->q4_quantity }}</td>
+						<td>{{ $s->quantity_requested }}</td>
 					</tr>
 				@endforeach
 			</tbody>
 		</table>
 	</div>
 </div>
+
+<hr>
+
+<div class="row">
+	<div class="col-md-3">
+		<h3><strong>Item Log</strong></h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rutrum mauris nibh, eget consequat diam mollis porta. Quisque accumsan hendrerit sapien, suscipit gravida ligula lobortis feugiat. Quisque enim augue, consequat sed ipsum id, molestie fringilla neque. Donec ac diam malesuada, venenatis dui nec, placerat ipsum.</p>
+	</div>
+	<div class="col-md-9">
+		<table class="table table-bordered">
+			<thead>
+				<th>RIS Number</th>
+				<th>Date Requested</th>
+				<th>Item Name</th>
+				<th>Quantity Requested</th>
+			</thead>
+			<tbody>
+				@foreach($items as $i)
+				<tr>
+					<td><a href="{{ action('RequestController@show', $i->request_id) }}">{{ $i->ris_number }}</a></td>
+					<td>{{ Carbon\Carbon::parse($i->created_at)->format('F d, Y') }}</td>
+					<td><a href="{{ route('items.show', $i->item_id) }}">{{ $i->item_name }}</a></td>
+					<td>{{ $i->quantity_requested }}</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+	</div>
+</div>
+
 <hr>
 <div class="row">
 	<div class="col-md-3">

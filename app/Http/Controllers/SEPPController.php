@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\SEPP;
+use App\Item;
+use DB;
 
 class SEPPController extends Controller
 {
@@ -176,5 +178,49 @@ class SEPPController extends Controller
         return response()->json($response);
     }
 
+    public function seppsearch(Request $request) {
+        // Search for the item object of the item requested.
+        $item_requested = Item::findOrFail($request->item_id);
+
+        // Get SEPP values of item w/ selected section.
+        $sepp = $item_requested->sepp()->where('section_id', $request->section_id)->first();
+
+        // Check if SEPP has values or not.
+        if ( is_null($sepp) ) {
+            $response = [
+                'status' => 'success',
+                'sepp' => 'no',
+                'item_id' => $item_requested->id,
+                'item_name' => $item_requested->name
+            ];
+
+            return response()->json($response);
+        }
+
+        // SEPP Values are present.
+
+        $requests = $item_requested->requests()->where('requested_by_section', $request->section_id)->get();
+
+
+        $message = 'SEPP valus for item '. $item_requested->name . ' was found.';
+
+        $response = [
+            'status' => 'success',
+            'sepp' => 'yes',
+            'msg' => $message,
+            'item_id' => $item_requested->id,
+            'item_name' => $item_requested->name,
+            'sepp_q1' => $sepp->q1_quantity,
+            'sepp_q2' => $sepp->q2_quantity,
+            'sepp_q3' => $sepp->q3_quantity,
+            'sepp_q4' => $sepp->q4_quantity,
+            'requests' => $requests
+        ];  
+
+        // Pass the response as a JSON object.
+        return response()->json($response);
+
+
+    }
 
 }
